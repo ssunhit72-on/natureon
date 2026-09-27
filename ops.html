@@ -1,0 +1,876 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nature.ON 운영관리</title><style>
+html.ops-standalone body > :not(#opsApp):not(#loginOverlay):not(script):not(style){display:none!important}
+html.ops-standalone .ops-app{display:none;min-height:100vh;padding:0;background:#eef2ee}
+html.ops-standalone .ops-app.active{display:block}
+html.ops-standalone .ops-app > .container{max-width:none;padding:0}
+html.ops-standalone .ops-shell{min-height:100vh;box-shadow:none}
+html.ops-standalone .login-overlay{display:none}
+html.ops-standalone .login-overlay.active{display:flex}
+html.ops-standalone .login-close{display:none}
+html.ops-standalone .ops-sidebar button[hidden]{display:none}
+</style>
+<style>
+:root{--green:#214C38;--green-dark:#153527;--green-light:#3E7257;--cream:#F5F2EA;--gold:#B79A61;--text:#202522;--text-light:#68716B;--white:#fff;--border:#E7E9E5;--max-width:1280px}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo",sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+.header{position:fixed;top:0;left:0;width:100%;height:82px;display:flex;align-items:center;z-index:1000;color:#fff;transition:.35s}
+.header.scrolled{background:rgba(255,255,255,.96);color:var(--text);box-shadow:0 5px 25px rgba(0,0,0,.07);backdrop-filter:blur(15px)}
+.header-inner{width:min(var(--max-width),calc(100% - 60px));margin:auto;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:11px;font-size:25px;font-weight:800;letter-spacing:-1px}.logo-mark{width:35px;height:35px;display:flex;align-items:center;justify-content:center;border:2px solid currentColor;border-radius:50%;font-size:16px}.logo-text small{display:block;font-size:8px;letter-spacing:2px;font-weight:500;opacity:.65;line-height:1}
+.nav{display:flex;align-items:center;gap:34px}.nav a{position:relative;font-size:14px;font-weight:600}.nav a:after{content:"";position:absolute;left:0;bottom:-8px;width:0;height:2px;background:currentColor;transition:.25s}.nav a:hover:after{width:100%}
+.header-contact{display:flex;align-items:center;gap:12px}.phone-small{font-size:13px;font-weight:600}.header-btn{padding:11px 20px;background:var(--green);color:#fff;border-radius:30px;font-size:13px;font-weight:700;transition:.25s}.header-btn:hover{background:var(--green-dark);transform:translateY(-2px)}.mobile-menu{display:none;border:0;background:transparent;color:inherit;font-size:26px;cursor:pointer}
+.hero{min-height:780px;height:100vh;position:relative;display:flex;align-items:center;color:#fff;background:#17261e;overflow:hidden}.hero:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,25,18,.82),rgba(10,25,18,.48) 45%,rgba(10,25,18,.16));pointer-events:none}.hero-slides{position:absolute;inset:0;z-index:0}.hero-slide{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;opacity:0;transition:opacity 3.8s ease-in-out}.hero-slide.active{opacity:1}.hero-inner{width:min(var(--max-width),calc(100% - 60px));margin:auto;position:relative;z-index:2}.hero-label{display:inline-flex;align-items:center;gap:10px;margin-bottom:25px;font-size:12px;font-weight:700;letter-spacing:2px}.hero-label:before{content:"";width:34px;height:1px;background:rgba(255,255,255,.8)}.hero h1{max-width:760px;font-size:clamp(48px,6vw,82px);line-height:1.08;letter-spacing:-4px;font-weight:800;margin-bottom:30px}.hero h1 strong{color:#D7C89F}.hero-description{max-width:820px;font-size:19px;line-height:1.7;color:rgba(255,255,255,.94);margin-bottom:38px;font-weight:400;letter-spacing:-.35px}.hero-description .hero-line{display:block;position:relative;padding-left:22px;margin:3px 0}.hero-description .hero-line:before{content:"—";position:absolute;left:0;top:0;color:#D7C89F;font-weight:600}.hero-buttons{display:flex;gap:12px;flex-wrap:wrap}.btn{min-width:155px;padding:15px 25px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;transition:.25s}.btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green-light);transform:translateY(-3px)}.btn-white{border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(10px)}.btn-white:hover{background:#fff;color:var(--green)}
+section{padding:125px 0}.container{width:min(var(--max-width),calc(100% - 60px));margin:auto}.section-heading{margin-bottom:60px}.section-label{display:block;margin-bottom:13px;color:var(--green);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}.section-title{font-size:clamp(32px,4vw,52px);line-height:1.2;letter-spacing:-2px;font-weight:800}.section-description{max-width:650px;margin-top:20px;color:var(--text-light);font-size:16px;line-height:1.8}
+.intro{background:var(--cream)}.intro-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:90px;align-items:center}.intro-image{position:relative}.intro-image img{width:100%;height:560px;object-fit:cover}.image-badge{position:absolute;right:-35px;bottom:35px;width:150px;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--green);color:#fff;border-radius:50%;text-align:center;box-shadow:0 20px 50px rgba(20,40,30,.1)}.image-badge strong{font-size:30px;line-height:1}.image-badge span{margin-top:8px;font-size:11px;opacity:.8}.intro-content h3{font-size:34px;line-height:1.35;letter-spacing:-1.5px;margin-bottom:25px}.intro-content p{color:var(--text-light);line-height:1.9;margin-bottom:18px}.ceo-box{margin-top:35px;padding-top:25px;border-top:1px solid rgba(33,76,56,.18)}.ceo-name{font-weight:800;color:var(--green)}.ceo-message{margin-top:7px;font-size:14px;color:var(--text-light)}
+.business-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.business-card{position:relative;min-height:490px;overflow:hidden;color:#fff;background:#222;transition:transform .35s}.business-card:hover{transform:translateY(-8px)}.business-card:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),rgba(0,0,0,.05) 70%)}.business-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:.6s}.business-card:hover img{transform:scale(1.06)}.business-content{position:absolute;left:35px;right:35px;bottom:35px;z-index:2}.business-number{display:block;margin-bottom:15px;font-size:12px;letter-spacing:2px;opacity:.75}.business-content h3{font-size:27px;letter-spacing:-1px;margin-bottom:12px}.business-content p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.82)}
+.why{background:var(--green);color:#fff}.why .section-label{color:#C9D8A9}.why-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:100px;align-items:start}.why .section-description{color:rgba(255,255,255,.68)}.strength-list{border-top:1px solid rgba(255,255,255,.18)}.strength-item{display:grid;grid-template-columns:70px 1fr;padding:30px 0;border-bottom:1px solid rgba(255,255,255,.18)}.strength-number{color:#C9D8A9;font-size:13px;font-weight:800}.strength-item h3{font-size:21px;margin-bottom:7px}.strength-item p{color:rgba(255,255,255,.65);font-size:14px;line-height:1.7}
+.process{background:#FAFAF8}.process-grid{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.process-item{padding:45px 25px;border-right:1px solid var(--border)}.process-item:last-child{border-right:0}.process-number{display:block;margin-bottom:35px;color:var(--green);font-size:12px;font-weight:800}.process-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:25px;border:1px solid var(--green);border-radius:50%;color:var(--green);font-size:14px}.process-item h3{font-size:18px;margin-bottom:10px}.process-item p{color:var(--text-light);font-size:13px;line-height:1.7}
+.food-grid{display:grid;grid-template-columns:1.4fr .8fr .8fr;grid-template-rows:270px 270px;gap:15px}.food-item{position:relative;overflow:hidden;background:#eee}.food-item.large{grid-row:span 2}.food-item img{width:100%;height:100%;object-fit:cover;transition:.6s}.food-item:hover img{transform:scale(1.06)}.food-caption{position:absolute;left:0;right:0;bottom:0;padding:30px 25px 22px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.75))}.food-caption span{display:block;margin-bottom:5px;font-size:11px;letter-spacing:1px;opacity:.75}.food-caption h3{font-size:19px}
+.case{background:var(--cream)}.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}.case-card{display:grid;grid-template-columns:1fr 1fr;background:#fff;overflow:hidden}.case-card img{width:100%;height:300px;object-fit:cover}.case-content{padding:35px}.case-content span{display:block;margin-bottom:14px;color:var(--green);font-size:11px;font-weight:800;letter-spacing:1.5px}.case-content h3{font-size:23px;line-height:1.4;margin-bottom:15px}.case-content p{color:var(--text-light);font-size:13px;line-height:1.8}
+.news-list{border-top:2px solid var(--text)}.news-item{display:grid;grid-template-columns:100px 1fr 100px;align-items:center;padding:25px 10px;border-bottom:1px solid var(--border);transition:.2s}.news-item:hover{background:#FAFAF8}.news-category{color:var(--green);font-size:11px;font-weight:800}.news-title{font-size:16px;font-weight:600}.news-date{color:#999;font-size:12px;text-align:right}
+.contact{padding:0 0 100px}.contact-box{position:relative;overflow:hidden;padding:85px 80px;color:#fff;background:linear-gradient(100deg,rgba(21,53,39,.97),rgba(33,76,56,.9))}.contact-box:after{content:"N";position:absolute;right:60px;bottom:-80px;font-size:320px;line-height:1;font-weight:900;color:rgba(255,255,255,.035)}.contact-content{position:relative;z-index:2}.contact-label{color:#C9D8A9;font-size:12px;font-weight:800;letter-spacing:2px}.contact-box h2{max-width:700px;margin:20px 0;font-size:clamp(35px,4vw,55px);line-height:1.2;letter-spacing:-2px}.contact-box p{max-width:600px;color:rgba(255,255,255,.72);margin-bottom:35px}.contact-actions{display:flex;align-items:center;gap:25px;flex-wrap:wrap}.phone{font-size:30px;font-weight:800}
+footer{background:#151B17;color:rgba(255,255,255,.65);padding:60px 0 35px}.footer-top{display:flex;justify-content:space-between;gap:50px;padding-bottom:45px;border-bottom:1px solid rgba(255,255,255,.1)}.footer-logo{color:#fff;font-size:24px;font-weight:800}.footer-info{margin-top:18px;font-size:12px;line-height:2;color:rgba(255,255,255,.5)}.footer-links{display:flex;gap:35px;color:rgba(255,255,255,.75);font-size:13px}.copyright{padding-top:25px;color:rgba(255,255,255,.35);font-size:11px}
+@media(max-width:1024px){.nav{gap:18px}.phone-small{display:none}.intro-grid,.why-grid{grid-template-columns:1fr;gap:60px}.business-grid{grid-template-columns:repeat(2,1fr)}.business-card:last-child{grid-column:span 2}.process-grid{grid-template-columns:repeat(2,1fr)}.process-item{border-bottom:1px solid var(--border)}.food-grid{grid-template-columns:1fr 1fr;grid-template-rows:300px 220px 220px}.food-item.large{grid-column:span 2;grid-row:span 1}.case-grid{grid-template-columns:1fr}}
+@media(max-width:768px){section{padding:85px 0}.container,.header-inner,.hero-inner{width:min(100% - 40px,var(--max-width))}.header{height:70px}.nav,.header-contact{display:none}.mobile-menu{display:block}.hero{min-height:700px;background-position:60% center}.hero h1{font-size:48px;letter-spacing:-2.5px}.hero-description{font-size:16px;line-height:1.75}.hero-description .hero-line{padding-left:19px;margin:2px 0}.intro-grid{gap:45px}.intro-image img{height:400px}.image-badge{width:110px;height:110px;right:-10px;bottom:20px}.image-badge strong{font-size:23px}.intro-content h3{font-size:28px}.business-grid{grid-template-columns:1fr}.business-card,.business-card:last-child{grid-column:auto;min-height:420px}.process-grid{grid-template-columns:1fr}.process-item{border-right:0}.food-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:250px 190px 190px}.food-item.large{grid-column:span 2}.case-card{grid-template-columns:1fr}.case-card img{height:230px}.news-item{grid-template-columns:65px 1fr;gap:10px}.news-date{display:none}.contact-box{padding:60px 30px}.phone{font-size:25px}.footer-top{flex-direction:column}.footer-links{flex-wrap:wrap;gap:18px}}
+@media(max-width:480px){.hero h1{font-size:40px}.hero-buttons{flex-direction:column;align-items:stretch}.btn{width:100%}.food-grid{display:flex;flex-direction:column}.food-item,.food-item.large{height:250px}.contact-actions{align-items:flex-start;flex-direction:column}}
+
+.management{background:#f4f6f2}
+.management-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:45px}
+.management-card{background:#fff;padding:30px;min-height:190px;border:1px solid #e5e9e4;transition:.25s}
+.management-card:hover{transform:translateY(-6px);box-shadow:0 18px 45px rgba(20,50,35,.10)}
+.management-card span{font-size:12px;color:#3e7257;font-weight:800;letter-spacing:2px}
+.management-card h3{font-size:22px;margin:28px 0 10px}
+.management-card p{color:#68716b;font-size:14px}
+.ops-app{display:none;background:#eef2ee;padding:70px 0}
+.ops-app.active{display:block}
+.ops-shell{display:grid;grid-template-columns:230px 1fr;min-height:720px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.08)}
+.ops-sidebar{background:#153527;color:#fff;padding:25px 16px}
+.ops-brand{display:flex;gap:10px;align-items:center;padding:10px 8px 25px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:15px;font-size:17px;font-weight:800}
+.ops-brand b{width:34px;height:34px;border:1px solid rgba(255,255,255,.7);border-radius:50%;display:grid;place-items:center}
+.ops-brand small{display:block;font-size:8px;letter-spacing:2px;opacity:.6;margin-top:3px}
+.ops-sidebar button{display:block;width:100%;border:0;background:transparent;color:rgba(255,255,255,.72);text-align:left;padding:13px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+.ops-sidebar button:hover,.ops-sidebar button.active{background:#2b5d45;color:#fff}
+.ops-main{padding:35px;overflow:auto}
+.ops-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+.ops-top h2{font-size:30px;margin-top:5px}
+.ops-actions{display:flex;gap:8px}
+.ops-light,.file-label{border:1px solid #dfe5df;background:#fff;padding:10px 14px;border-radius:7px;cursor:pointer;font-size:13px}
+.file-label input{display:none}
+.ops-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ops-stat{border:1px solid #e3e8e3;background:#fff;padding:20px;border-radius:8px}
+.ops-stat small{color:#6c756f}.ops-stat strong{display:block;font-size:26px;margin-top:8px}
+.ops-card{background:#fff;border:1px solid #e3e8e3;border-radius:8px;padding:22px;margin-top:16px}
+.ops-card h3{margin-bottom:16px}
+.ops-table{width:100%;border-collapse:collapse;font-size:13px}
+.ops-table th,.ops-table td{border-bottom:1px solid #edf0ed;padding:10px 8px;text-align:left}
+.ops-table th{background:#f7f9f6}
+.ops-form{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ops-form .wide{grid-column:span 2}.ops-form .full{grid-column:1/-1}
+.ops-form label{font-size:12px;color:#5f6862}.ops-form input,.ops-form select,.ops-form textarea{width:100%;margin-top:5px;border:1px solid #dfe5df;border-radius:6px;padding:10px;font:inherit;background:#fff}
+.ops-form textarea{min-height:90px;resize:vertical}
+.ops-primary{border:0;background:#214c38;color:#fff;padding:11px 18px;border-radius:7px;cursor:pointer;font-weight:700}
+.ops-danger{border:0;background:#8b3b32;color:#fff;padding:7px 10px;border-radius:5px;cursor:pointer}
+.ops-tabs{display:flex;gap:7px;margin-bottom:15px;flex-wrap:wrap}.ops-tab{border:1px solid #dfe5df;background:#fff;padding:9px 13px;border-radius:20px;cursor:pointer}.ops-tab.active{background:#214c38;color:#fff;border-color:#214c38}
+.ops-note{font-size:12px;color:#747d77;margin-top:8px}
+@media(max-width:1024px){.management-grid{grid-template-columns:repeat(2,1fr)}.ops-shell{grid-template-columns:190px 1fr}.ops-grid{grid-template-columns:repeat(2,1fr)}.ops-form{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.management-grid{grid-template-columns:1fr}.ops-shell{display:block}.ops-sidebar{display:flex;overflow:auto;gap:5px;padding:10px}.ops-brand{display:none}.ops-sidebar button{white-space:nowrap;width:auto}.ops-main{padding:22px 15px}.ops-top{align-items:flex-start;gap:12px;flex-direction:column}.ops-grid{grid-template-columns:1fr 1fr}.ops-form{grid-template-columns:1fr}.ops-form .wide{grid-column:auto}}
+@media(max-width:480px){.ops-grid{grid-template-columns:1fr}.ops-table{font-size:11px}}
+
+
+.login-overlay{display:none;position:fixed;inset:0;z-index:3000;background:rgba(10,25,18,.72);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px}.login-overlay.active{display:flex}.login-box{width:min(460px,100%);background:#fff;border-radius:16px;box-shadow:0 30px 90px rgba(0,0,0,.28);padding:34px}.login-brand{display:flex;align-items:center;gap:12px;color:var(--green);font-weight:800;font-size:23px}.login-mark{width:38px;height:38px;border:2px solid var(--green);border-radius:50%;display:grid;place-items:center}.login-box h2{margin:25px 0 6px;font-size:28px}.login-sub{color:var(--text-light);font-size:13px;margin-bottom:24px}.login-form label{display:block;font-size:12px;font-weight:700;margin:14px 0 7px}.login-form input,.login-form select{width:100%;padding:13px;border:1px solid #dfe5df;border-radius:8px;font:inherit;outline:none}.login-form input:focus,.login-form select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(33,76,56,.08)}.login-submit{width:100%;margin-top:20px;padding:14px;border:0;border-radius:8px;background:var(--green);color:#fff;font-weight:800;cursor:pointer}.login-close{float:right;border:0;background:none;font-size:22px;color:#777;cursor:pointer}.login-test{margin-top:18px;padding:14px;background:#f5f7f3;border-radius:9px;font-size:12px;color:#59635c;line-height:1.7}.login-test b{color:var(--green)}.role-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:20px;background:#edf4ef;color:var(--green);font-size:12px;font-weight:800}.ops-user{display:flex;align-items:center;gap:10px}.ops-logout{border:1px solid #dfe5df;background:#fff;padding:8px 12px;border-radius:7px;cursor:pointer;font-size:12px}.ops-permission{padding:11px 14px;background:#f6f8f5;border:1px solid #e4e9e3;border-radius:8px;color:#657068;font-size:12px;margin-bottom:15px}.ops-sidebar .disabled{opacity:.35;pointer-events:none}.branch-select{padding:8px 10px;border:1px solid #dfe5df;border-radius:7px;background:#fff;font-size:12px}.
+
+.branch-head{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:15px}
+.branch-card{border:1px solid #e3e8e3;background:#fff;border-radius:9px;padding:18px}
+.branch-card h4{font-size:16px;margin-bottom:7px}
+.branch-meta{font-size:12px;color:#737c76;line-height:1.8}
+.branch-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.ops-select{padding:9px 11px;border:1px solid #dfe5df;border-radius:7px;background:#fff;font:inherit}
+
+.week-meal-table th,.week-meal-table td{min-width:105px;vertical-align:top}.week-meal-table .week-type{min-width:145px;background:#f7f9fc}.week-cell input{display:block;width:88px;margin:3px auto;font-size:12px;padding:7px}.week-cell input::placeholder{color:#888}
+
+.gallery-on{padding:110px 0;background:#f7f8f6}.gallery-slider-wrap{position:relative;display:flex;align-items:stretch;gap:18px}.gallery-slider{display:grid;grid-template-columns:1fr 1fr;gap:22px;width:100%;overflow:hidden}.gallery-feature{position:relative;display:block;height:430px;border-radius:20px;overflow:hidden;background:#ddd;box-shadow:0 12px 35px rgba(0,0,0,.08)}.gallery-feature img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.gallery-feature:hover img{transform:scale(1.04)}.gallery-overlay{position:absolute;left:0;right:0;bottom:0;padding:34px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.78))}.gallery-overlay span{font-size:11px;letter-spacing:2px;font-weight:800}.gallery-overlay h3{font-size:28px;margin:8px 0}.gallery-overlay p{margin:0 0 12px;font-size:14px;opacity:.92}.gallery-overlay b{font-size:13px}.gallery-arrow{display:none}.gallery-dots{display:none}.gallery-detail{margin-top:70px;padding-top:55px;border-top:1px solid #dfe4df}.gallery-detail-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px}.gallery-detail-head h3{margin:8px 0 0;font-size:30px}.gallery-detail-head a{font-size:13px;color:#526156}.gallery-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.gallery-detail-grid img{width:100%;height:220px;object-fit:cover;border-radius:14px}.gallery-detail-grid figure{margin:0}.gallery-detail-grid figcaption{font-size:12px;color:#667068;margin-top:8px}
+@media(max-width:700px){.gallery-slider{display:flex;overflow:hidden;scroll-behavior:smooth}.gallery-feature{min-width:88vw;height:350px}.gallery-arrow{display:block;position:absolute;z-index:3;top:45%;width:38px;height:38px;border:0;border-radius:50%;background:rgba(255,255,255,.9);font-size:28px;line-height:1}.gallery-prev{left:10px}.gallery-next{right:10px}.gallery-dots{display:flex;justify-content:center;gap:7px;margin-top:16px}.gallery-dots button{width:7px;height:7px;border:0;border-radius:50%;background:#c5cbc6}.gallery-dots button.active{background:#315c40}.gallery-detail-grid{grid-template-columns:1fr 1fr}.gallery-detail-grid img{height:150px}.gallery-detail-head{align-items:start;gap:15px}.gallery-detail-head h3{font-size:23px}}
+</style>
+
+<style id="natureon-closing-approval-style">
+.closing-approval-wrap{margin-top:24px}.closing-filter{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.closing-filter select,.closing-filter input{padding:10px 12px;border:1px solid #dfe5df;border-radius:10px;background:#fff}
+.approval-table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}
+.approval-table th,.approval-table td{padding:12px 10px;border-bottom:1px solid #edf0ed;text-align:left;font-size:13px}.approval-table th{background:#f6f8f5;color:#526156}
+.status-chip{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}
+.status-submitted{background:#fff3cd;color:#856404}.status-review{background:#e8f0ff;color:#2458a6}
+.status-approved{background:#e8f7ed;color:#28734a}.status-locked{background:#ececec;color:#555}.status-rejected{background:#fdecec;color:#a33}
+.attach-box{border:1px dashed #aeb9af;background:#fafcf9;border-radius:12px;padding:14px;margin-top:10px}
+.file-list{margin-top:8px;font-size:12px;color:#566}.file-item{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #edf0ed}
+.approval-actions{display:flex;gap:6px;flex-wrap:wrap}.btn-small{border:0;border-radius:8px;padding:7px 10px;cursor:pointer;font-weight:700}
+.btn-review{background:#e8f0ff;color:#2458a6}.btn-approve{background:#e8f7ed;color:#28734a}.btn-reject{background:#fdecec;color:#a33}
+.btn-lock{background:#333;color:#fff}.btn-download{background:#f1f4f0;color:#354239}
+.close-modal{position:fixed;inset:0;background:rgba(0,0,0,.48);display:flex;align-items:center;justify-content:center;z-index:9999}
+.close-modal-card{width:min(720px,92vw);max-height:88vh;overflow:auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.close-modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.close-modal-head h3{margin:0}
+.note-box{background:#f7faf6;border-left:4px solid #2c5e3b;padding:10px 12px;border-radius:6px;font-size:12px;line-height:1.6;color:#4d5a50}
+</style>
+
+
+<style>
+.gallery-feature{transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s ease;cursor:pointer;will-change:transform}.gallery-feature::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.5));opacity:.55;transition:opacity .35s ease}.gallery-feature:hover{transform:translateY(-6px) scale(1.012);box-shadow:0 18px 42px rgba(20,35,25,.16)}.gallery-feature:hover::after{opacity:.8}.gallery-feature img{transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .5s ease}.gallery-feature:hover img{transform:scale(1.045);filter:saturate(1.04)}.gallery-overlay{transition:transform .45s ease,opacity .45s ease}.gallery-feature:hover .gallery-overlay{transform:translateY(-5px)}.gallery-feature b{display:inline-block;transition:transform .35s ease,letter-spacing .35s ease}.gallery-feature:hover b{transform:translateX(5px);letter-spacing:.03em}.gallery-detail{animation:galleryDetailIn .55s cubic-bezier(.2,.8,.2,1)}.gallery-detail .gallery-detail-grid img{transition:transform .45s ease,box-shadow .45s ease;cursor:zoom-in}.gallery-detail .gallery-detail-grid img:hover{transform:scale(1.025);box-shadow:0 12px 30px rgba(20,35,25,.15)}.gallery-dots button{transition:transform .25s ease,opacity .25s ease}.gallery-dots button:hover{transform:scale(1.25)}
+.gallery-lightbox{position:fixed;inset:0;background:rgba(10,15,12,.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;padding:24px}.gallery-lightbox.is-open{opacity:1;visibility:visible}.gallery-lightbox img{max-width:min(1100px,92vw);max-height:82vh;object-fit:contain;border-radius:10px;transform:scale(.94);transition:transform .4s cubic-bezier(.2,.8,.2,1);box-shadow:0 25px 70px rgba(0,0,0,.4)}.gallery-lightbox.is-open img{transform:scale(1)}.gallery-lightbox-close,.gallery-lightbox-prev,.gallery-lightbox-next{position:absolute;border:0;background:rgba(255,255,255,.12);color:#fff;border-radius:50%;width:44px;height:44px;font-size:28px;cursor:pointer;transition:background .2s ease,transform .2s ease}.gallery-lightbox-close{top:22px;right:22px}.gallery-lightbox-prev{left:22px}.gallery-lightbox-next{right:22px}.gallery-lightbox-close:hover,.gallery-lightbox-prev:hover,.gallery-lightbox-next:hover{background:rgba(255,255,255,.24);transform:scale(1.06)}.gallery-lightbox-caption{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:#fff;font-size:14px;letter-spacing:.04em;text-align:center}.gallery-detail-grid img{animation:galleryThumbIn .5s both}.gallery-detail-grid img:nth-child(2){animation-delay:.05s}.gallery-detail-grid img:nth-child(3){animation-delay:.1s}.gallery-detail-grid img:nth-child(4){animation-delay:.15s}.gallery-detail-grid img:nth-child(5){animation-delay:.2s}.gallery-detail-grid img:nth-child(6){animation-delay:.25s}@keyframes galleryDetailIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}@keyframes galleryThumbIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@media(max-width:700px){.gallery-feature:hover{transform:none;box-shadow:none}.gallery-feature:hover img{transform:none}.gallery-lightbox{padding:14px}.gallery-lightbox-prev{left:10px}.gallery-lightbox-next{right:10px}.gallery-lightbox-close{top:10px;right:10px}}
+</style>
+
+
+<style id="publicNewsAdminStyle">.news-admin-form{display:grid;gap:12px}.news-admin-form input,.news-admin-form select,.news-admin-form textarea{width:100%;padding:12px;border:1px solid #d9e2d9;border-radius:8px;font:inherit}.news-admin-form label{font-size:13px;font-weight:700}.news-admin-list{margin-top:28px;border-top:1px solid #d9e2d9}.news-admin-row{padding:16px 0;border-bottom:1px solid #d9e2d9;display:flex;justify-content:space-between;align-items:center;gap:12px}.news-admin-row button{padding:7px 11px;margin-left:5px;cursor:pointer}.news-admin-note{font-size:12px;color:#68716b;line-height:1.6}</style>
+<style id="natureOnGalleryAdminStyle">
+.gallery-admin-form{display:grid;gap:12px}.gallery-admin-form input,.gallery-admin-form textarea{width:100%;padding:12px;border:1px solid #d9e2d9;border-radius:8px;font:inherit}.gallery-admin-form label{font-size:13px;font-weight:700}.gallery-admin-list{margin-top:28px;border-top:1px solid #d9e2d9}.gallery-admin-row{padding:16px 0;border-bottom:1px solid #d9e2d9;display:flex;justify-content:space-between;align-items:center;gap:12px}.gallery-admin-row button{padding:7px 11px;margin-left:5px;cursor:pointer}.gallery-admin-thumb{width:64px;height:46px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:10px}.gallery-admin-note{font-size:12px;color:#68716b;line-height:1.6}
+</style>
+<style id="natureOnCustomerAdminStyle">
+.customer-admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.customer-admin-tabs button{border:1px solid #dfe5df;background:#fff;border-radius:9px;padding:9px 13px;cursor:pointer;font-weight:700}.customer-admin-tabs button.active{background:#214C38;color:#fff;border-color:#214C38}
+.customer-admin-detail{margin-top:16px;padding:18px;border:1px solid #e5eae5;border-radius:14px;background:#fbfcfa}.customer-admin-detail h4{margin:0 0 8px}.customer-admin-detail pre{white-space:pre-wrap;font:inherit;line-height:1.7;color:#4d584f;margin:12px 0}.customer-admin-detail textarea{width:100%;min-height:150px;padding:12px;border:1px solid #dfe5df;border-radius:10px;font:inherit}.customer-admin-row-actions{display:flex;gap:6px;flex-wrap:wrap}.customer-admin-row-actions button{border:0;border-radius:8px;padding:7px 10px;cursor:pointer;font-weight:700}.customer-admin-row-actions .reply{background:#e8f0ff;color:#2458a6}.customer-admin-row-actions .done{background:#e8f7ed;color:#28734a}.customer-admin-row-actions .del{background:#fdecec;color:#a33}
+.customer-admin-status{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}.customer-admin-status.wait{background:#fff3cd;color:#856404}.customer-admin-status.answer{background:#e8f0ff;color:#2458a6}.customer-admin-status.done{background:#e8f7ed;color:#28734a}
+</style>
+<style>
+body{margin:0;background:#eef2ee}
+.ops-app{display:none;min-height:100vh;padding:0}
+.ops-app.active{display:block}
+.ops-app>.container{max-width:none;padding:0}
+.ops-shell{min-height:100vh;box-shadow:none}
+.ops-sidebar button[hidden]{display:none}
+.login-close{display:none}
+</style></head><body><div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <button class="login-close" onclick="closeLogin()">×</button>
+    <div class="login-brand"><span class="login-mark">N</span>Nature.ON</div>
+    <h2>운영관리 로그인</h2><p class="login-sub">관리자 또는 직원 모드를 선택해 접속하세요.</p>
+    <form class="login-form" onsubmit="loginOps(event)">
+      <label>로그인 모드</label><select id="loginMode" onchange="setLoginMode()"><option value="hq">관리자 (본사)</option><option value="branch">직원 (지점)</option></select>
+      <label>아이디</label><input id="loginId" autocomplete="username" required placeholder="아이디 입력">
+      <label>비밀번호</label><input id="loginPw" type="password" autocomplete="current-password" required placeholder="비밀번호 입력">
+      <div id="loginBranchRow"><label>접속 지점</label><select id="loginBranch"></select></div>
+      <button class="login-submit">로그인</button>
+    </form>
+    <div class="login-test"><b>테스트 계정</b><br>본사관리자: <b>hq / 1234</b><br>지점관리자: <b>branch / 1234</b><br>※ 테스트용 브라우저 인증입니다. 본사관리자는 전체 지점, 지점관리자는 선택한 지점으로 접속합니다.</div>
+  </div>
+</div>
+
+
+<section class="ops-app" id="opsApp">
+  <div class="container">
+    <div class="ops-shell">
+      <aside class="ops-sidebar">
+        <div class="ops-brand"><b>N</b><div>Nature.ON<small>OPERATIONS</small></div></div>
+        <button onclick="openOps('dashboard')" data-op="dashboard">대시보드</button>
+        <button onclick="openOps('board')" data-op="board">내부 게시판</button>
+        <button onclick="openOps('news')" data-op="news" data-hq="1">홈페이지 소식 관리</button>
+        <button onclick="openOps('gallery')" data-op="gallery" data-hq="1">사내갤러리 관리</button>
+        <button onclick="openOps('inquiries')" data-op="inquiries" data-hq="1">고객문의 관리</button>
+        <button onclick="openOps('consultations')" data-op="consultations" data-hq="1">상담신청 관리</button>
+        <button onclick="openOps('meal')" data-op="meal">식수 관리</button>
+        <button onclick="openOps('purchase')" data-op="purchase">매입 관리</button>
+        <button onclick="openOps('expense')" data-op="expense">경비 관리</button>
+        <button onclick="openOps('labor')" data-op="labor">근무·인건비</button>
+        <button onclick="openOps('closing')" data-op="closing">일·월 마감</button>
+        <button onclick="openOps('branches')" data-op="branches" data-hq="1">지점 관리</button>
+        <button onclick="openOps('branchSettings')" data-op="branchSettings">지점 설정</button>
+        <button onclick="openOps('settings')" data-op="settings" data-hq="1">설정·백업</button>
+      </aside>
+      <main class="ops-main">
+        <div class="ops-top">
+          <div><span class="section-label">OPERATIONS WEB</span><h2 id="opsTitle">운영 대시보드</h2></div>
+          <div class="ops-actions"><span id="opsUserInfo"></span><button class="ops-light" onclick="exportOps()">데이터 백업</button><label class="ops-light file-label">복원<input type="file" accept=".json" onchange="importOps(event)"></label></div>
+        </div>
+        <div id="opsContent"></div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<div id="closingApprovalPanel" class="closing-approval-wrap" style="display:none">
+  <div class="card">
+    <div class="card-head">
+      <div><h3>마감 승인 관리</h3><p class="muted">지점에서 제출한 월마감 자료와 Excel 첨부파일을 확인하고 승인합니다.</p></div>
+      <div class="approval-actions"><button class="btn-small btn-download" onclick="exportClosingExcelTemplate()">Excel 양식 다운로드</button></div>
+    </div>
+    <div class="closing-filter">
+      <select id="approvalMonthFilter"></select>
+      <select id="approvalBranchFilter"></select>
+      <select id="approvalStatusFilter">
+        <option value="ALL">전체 상태</option><option value="submitted">제출</option><option value="review">검토중</option>
+        <option value="approved">승인</option><option value="locked">확정</option><option value="rejected">반려</option>
+      </select>
+      <button class="btn-small" onclick="renderClosingApproval()">조회</button>
+    </div>
+    <div id="closingApprovalTable"></div>
+  </div>
+</div>
+
+
+<script>
+/* Nature.ON 운영관리 웹앱
+   - localStorage 기반 단일 HTML 버전
+   - 식수 / 매입 / 경비 / 근무·인건비 / 게시판 / 일·월 마감
+*/
+
+const OPS_KEY='natureon_ops_v2';
+
+const DEFAULT_BRANCHES=[
+  {id:'hq',name:'본사',customer:'Nature.ON 본사',address:'',startDate:'2027-01-01',unitPrice:7000,meals:['조식','중식','석식','야식','특식'],guaranteed:0,manager:'본사관리자',managerId:'hq',managerPw:'1234',active:true},
+  {id:'sejong1',name:'세종1지점',customer:'세종1지점',address:'',startDate:'2027-01-01',unitPrice:7000,meals:['중식','석식','야식','특식'],guaranteed:100,manager:'지점관리자',managerId:'branch',managerPw:'1234',active:true},
+  {id:'saemangeum',name:'새만금지점',customer:'새만금 사업장',address:'',startDate:'2027-01-01',unitPrice:7000,meals:['중식','석식','야식','특식'],guaranteed:100,manager:'지점관리자',managerId:'branch',managerPw:'1234',active:true},
+  {id:'iksan',name:'익산공장점',customer:'익산공장',address:'',startDate:'2027-01-01',unitPrice:7000,meals:['중식','석식','야식','특식'],guaranteed:100,manager:'지점관리자',managerId:'branch',managerPw:'1234',active:true}
+];
+
+const defaultOps={
+  branches:DEFAULT_BRANCHES,
+  users:[
+    {id:'u_hq',username:'hq',pw:'1234',role:'hq',name:'본사관리자',branchId:'hq'},
+    {id:'u_branch',username:'branch',pw:'1234',role:'branch',name:'지점관리자',branchId:'sejong1'}
+  ],
+  meals:[], purchases:[], expenses:[], labor:[],
+  posts:[
+    {id:Date.now(),branchId:'hq',category:'NOTICE',title:'Nature.ON 운영관리 시스템이 시작되었습니다.',writer:'관리자',date:new Date().toISOString().slice(0,10),content:'현장 운영 관련 공지사항을 등록하세요.'}
+  ]
+};
+
+
+function defaultPricing(b){
+  const base=Number(b?.unitPrice||7000);
+  return {
+    customer:{breakfast:base,lunch:base,dinner:base,late:base},
+    convenience:{name:'간편식',unit:base},
+    partners:Array.isArray(b?.partners)?b.partners:[]
+  };
+}
+function ensureBranchPricing(b){
+  if(!b)return;
+  const d=defaultPricing(b), p=b.pricing||{};
+  b.pricing={
+    customer:{...d.customer,...(p.customer||{})},
+    convenience:{...d.convenience,...(p.convenience||{})},
+    partners:Array.isArray(p.partners)?p.partners:[]
+  };
+  b.unitPrice=Number(b.unitPrice||b.pricing.customer.lunch||7000);
+}
+function mealPriceOptions(b){
+  ensureBranchPricing(b);
+  const p=b.pricing;
+  return [
+    ['고객사 · 조식','고객사','조식',p.customer.breakfast],
+    ['고객사 · 중식','고객사','중식',p.customer.lunch],
+    ['고객사 · 석식','고객사','석식',p.customer.dinner],
+    ['고객사 · 야식','고객사','야식',p.customer.late],
+    ['고객사 · 간편식','고객사','간편식',p.convenience.unit],
+    ...p.partners.map(x=>[`${x.name}`,'협력사',x.name,Number(x.unit||0)])
+  ];
+}
+function priceForMealType(b,type){
+  ensureBranchPricing(b); const p=b.pricing;
+  if(type==='조식')return Number(p.customer.breakfast||0);
+  if(type==='중식')return Number(p.customer.lunch||0);
+  if(type==='석식')return Number(p.customer.dinner||0);
+  if(type==='야식')return Number(p.customer.late||0);
+  if(type==='간편식')return Number(p.convenience.unit||0);
+  const partner=p.partners.find(x=>x.name===type); return Number(partner?.unit||0);
+}
+
+function loadOps(){
+  // 이전 버전에서 사용한 저장 키를 비교하고 기록이 가장 많은 데이터를 이어받는다.
+  const candidates=['natureon_ops_v2','natureone_ops_v2','natureon_ops_v1'].map(key=>{
+    try{const value=JSON.parse(localStorage.getItem(key)||'null');return value&&typeof value==='object'?value:null}catch{return null}
+  }).filter(Boolean);
+  const score=value=>['meals','purchases','expenses','labor','posts'].reduce((n,key)=>n+(Array.isArray(value[key])?value[key].length:0),0)*10+(Array.isArray(value.branches)?value.branches.length:0);
+  let raw=candidates.sort((a,b)=>score(b)-score(a))[0]||null;
+  raw=raw||JSON.parse(JSON.stringify(defaultOps));
+  raw.branches=raw.branches||JSON.parse(JSON.stringify(DEFAULT_BRANCHES));
+  raw.branches.forEach(ensureBranchPricing);
+  raw.users=raw.users||[
+    {id:'u_hq',username:'hq',pw:'1234',role:'hq',name:'본사관리자',branchId:'hq'},
+    {id:'u_branch',username:'branch',pw:'1234',role:'branch',name:'지점관리자',branchId:'sejong1'}
+  ];
+  if(!raw.users.some(u=>u.role==='hq'))raw.users.push({id:'u_hq',username:'hq',pw:'1234',role:'hq',name:'본사관리자',branchId:'hq'});
+  if(!raw.users.some(u=>u.role==='branch'))raw.users.push({id:'u_branch',username:'branch',pw:'1234',role:'branch',name:'지점관리자',branchId:'sejong1'});
+  ['meals','purchases','expenses','labor','posts'].forEach(k=>raw[k]=Array.isArray(raw[k])?raw[k]:[]);
+  // 기존 기록에는 세종1지점을 기본값으로 연결
+  ['meals','purchases','expenses','labor'].forEach(k=>raw[k].forEach(x=>{if(!x.branchId)x.branchId='sejong1'}));
+  raw.posts.forEach(x=>{if(!x.branchId)x.branchId='hq'});
+  localStorage.setItem(OPS_KEY,JSON.stringify(raw));
+  return raw;
+}
+let ops=loadOps();
+
+function saveOps(){localStorage.setItem(OPS_KEY,JSON.stringify(ops));}
+const won=n=>Number(n||0).toLocaleString('ko-KR')+'원';
+const num=n=>Number(n||0).toLocaleString('ko-KR');
+let opsSession=null;
+
+function branchById(id){return ops.branches.find(b=>b.id===id)||ops.branches[0]}
+function activeBranches(){return ops.branches.filter(b=>b.active!==false)}
+function isHQ(){return opsSession&&opsSession.role==='hq'}
+function currentBranchId(){return isHQ()?'hq':(opsSession?.branchId||'sejong1')}
+function currentBranch(){return branchById(currentBranchId())}
+function branchName(id){return branchById(id)?.name||id||''}
+
+function refreshLoginBranches(){
+  const sel=document.getElementById('loginBranch'); if(!sel)return;
+  const list=activeBranches();
+  sel.innerHTML=list.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
+  if(opsSession?.branchId)sel.value=opsSession.branchId;
+}
+refreshLoginBranches();
+function setLoginMode(){
+  const employee=document.getElementById('loginMode').value==='branch';
+  document.getElementById('loginBranchRow').hidden=!employee;
+  document.getElementById('loginId').placeholder=employee?'직원 아이디 입력':'관리자 아이디 입력';
+}
+setLoginMode();
+
+function requestOpsLogin(){
+  if(opsSession){openOps('dashboard');return;}
+  refreshLoginBranches();
+  document.getElementById('loginOverlay').classList.add('active');
+  setTimeout(()=>document.getElementById('loginId').focus(),50);
+}
+function closeLogin(){document.getElementById('loginOverlay').classList.remove('active')}
+function syncOpsVisibility(){
+  const signedIn=!!opsSession;
+
+
+
+  document.querySelectorAll('.ops-sidebar [data-hq]').forEach(button=>button.hidden=!isHQ());
+  if(!signedIn)document.getElementById('opsApp').classList.remove('active');
+}
+
+function loginOps(e){
+  e.preventDefault();
+  const id=document.getElementById('loginId').value.trim();
+  const pw=document.getElementById('loginPw').value;
+  const mode=document.getElementById('loginMode').value;
+  const branchId=document.getElementById('loginBranch').value;
+  const u=ops.users.find(x=>x.username===id&&x.pw===pw&&x.role===mode);
+  if(!u){alert('아이디 또는 비밀번호가 올바르지 않습니다.');return;}
+  const selected=branchById(branchId);
+  if(u.role==='hq'){
+    opsSession={...u,branchId:'hq'};
+  }else{
+    // 테스트 편의를 위해 지점관리자는 선택한 지점으로 접속 가능.
+    // 실제 운영에서는 사용자에게 고정 branchId를 부여하면 된다.
+    opsSession={...u,branchId:selected.id};
+  }
+  sessionStorage.setItem('natureon_ops_session',JSON.stringify(opsSession));
+  closeLogin(); syncOpsVisibility(); openOps('dashboard');
+}
+function logoutOps(){
+  opsSession=null;
+  sessionStorage.removeItem('natureon_ops_session');
+  localStorage.removeItem('natureon_demo_session');
+  localStorage.removeItem('natureone_demo_session');
+  window.location.replace('index.html');
+}
+try{opsSession=JSON.parse(sessionStorage.getItem('natureon_ops_session')||'null')}catch(e){opsSession=null}
+if(opsSession&&!ops.users.some(u=>u.username===opsSession.username&&u.role===opsSession.role))opsSession=null;
+if(opsSession)document.getElementById('loginMode').value=opsSession.role==='hq'?'hq':'branch';
+setLoginMode();
+syncOpsVisibility();
+
+function requireHQ(){
+  if(!isHQ()){alert('본사관리자 전용 메뉴입니다.');return false}
+  return true;
+}
+function scoped(arr){
+  if(isHQ())return arr;
+  return arr.filter(x=>x.branchId===currentBranchId());
+}
+function allOrScopedPosts(){
+  if(isHQ())return ops.posts;
+  return ops.posts.filter(x=>!x.branchId||x.branchId==='hq'||x.branchId===currentBranchId());
+}
+
+function openOps(view='dashboard'){
+  if(!opsSession){requestOpsLogin();return;}
+  if(['settings','branches','news','gallery'].includes(view)&&!isHQ()){alert('본사관리자 전용 메뉴입니다.');return;}
+  const el=document.getElementById('opsApp'); if(!el)return;
+  el.classList.add('active'); el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.ops-sidebar button').forEach(b=>b.classList.toggle('active',b.dataset.op===view));
+  const titles={
+    dashboard:'운영 대시보드',board:'내부 게시판',meal:'식수 관리',purchase:'매입 관리',
+    expense:'경비 관리',labor:'근무·인건비',closing:'일·월 마감',
+    branches:'지점 관리',branchSettings:'지점 설정',settings:'설정·백업',news:'홈페이지 소식 관리',gallery:'사내갤러리 관리'
+  };
+  document.getElementById('opsTitle').textContent=titles[view]||'운영 대시보드';
+  const info=document.getElementById('opsUserInfo');
+  if(info)info.innerHTML=`<span class="role-badge">${isHQ()?'본사관리자':'지점관리자'} · ${currentBranch().name}</span><button class="ops-logout" onclick="logoutOps()">로그아웃</button>`;
+  const box=document.getElementById('opsContent');
+  if(view==='closing'&&!isHQ()){
+    renderBranchClosing(box); return;
+  }
+  const renderer={dashboard:renderDashboard,board:renderBoard,meal:renderMeal,purchase:renderPurchase,expense:renderExpense,labor:renderLabor,closing:renderClosing,branches:renderBranches,branchSettings:renderBranchSettings,settings:renderSettings,news:renderPublicNewsAdmin,gallery:renderGalleryAdmin}[view]||renderDashboard;
+  renderer(box);
+}
+
+function card(title,body){return `<div class="ops-card"><h3>${title}</h3>${body}</div>`}
+
+function renderDashboard(box){
+  const today=new Date().toISOString().slice(0,10), ym=today.slice(0,7);
+  const meals=scoped(ops.meals).filter(x=>x.date===today);
+  const mealCount=meals.reduce((a,x)=>a+Number(x.actual||x.billable||0),0);
+  const sales=meals.reduce((a,x)=>a+Number(x.billable||x.actual||0)*Number(x.unit||currentBranch().unitPrice||7000),0);
+  const purchase=scoped(ops.purchases).filter(x=>x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.amount||0),0);
+  const expense=scoped(ops.expenses).filter(x=>x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.amount||0),0);
+  const labor=scoped(ops.labor).filter(x=>x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.amount||0),0);
+  const posts=allOrScopedPosts().slice().reverse().slice(0,5);
+  const branchSummary=isHQ()?activeBranches().filter(b=>b.id!=='hq').map(b=>{
+    const ms=ops.meals.filter(x=>x.branchId===b.id&&x.date?.slice(0,7)===ym);
+    const rev=ms.reduce((a,x)=>a+Number(x.billable||x.actual||0)*Number(x.unit||b.unitPrice||7000),0);
+    const pu=ops.purchases.filter(x=>x.branchId===b.id&&x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.amount||0),0);
+    const ex=ops.expenses.filter(x=>x.branchId===b.id&&x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.amount||0),0);
+    const la=ops.labor.filter(x=>x.branchId===b.id&&x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.amount||0),0);
+    return `<tr><td>${b.name}</td><td>${num(ms.reduce((a,x)=>a+Number(x.billable||x.actual||0),0))}식</td><td>${won(rev)}</td><td>${won(pu)}</td><td>${won(la)}</td><td>${won(rev-pu-ex-la)}</td></tr>`;
+  }).join(''):'';
+
+  box.innerHTML=`
+  <div class="ops-permission">현재 권한: <b>${isHQ()?'본사관리자':'지점관리자'}</b> · ${currentBranch().name} · ${isHQ()?'전체 지점 통합조회':'담당 지점 데이터만 조회·입력'}</div>
+  <div class="ops-grid">
+    <div class="ops-stat"><small>오늘 식수</small><strong>${num(mealCount)}식</strong></div>
+    <div class="ops-stat"><small>오늘 예상매출</small><strong>${won(sales)}</strong></div>
+    <div class="ops-stat"><small>이번달 매입</small><strong>${won(purchase)}</strong></div>
+    <div class="ops-stat"><small>이번달 운영비</small><strong>${won(expense+labor)}</strong></div>
+  </div>
+  ${isHQ()?card('지점별 운영 현황',`<div style="overflow:auto"><table class="ops-table"><tr><th>지점</th><th>청구식수</th><th>매출</th><th>식재료</th><th>인건비</th><th>예상이익</th></tr>${branchSummary||'<tr><td colspan="6">등록된 지점이 없습니다.</td></tr>'}</table></div>`):''}
+  ${card('최근 게시판',`<table class="ops-table"><tr><th>구분</th><th>제목</th><th>작성자</th><th>일자</th></tr>${posts.map(p=>`<tr><td>${p.category}</td><td>${p.title}</td><td>${p.writer}</td><td>${p.date}</td></tr>`).join('')||'<tr><td colspan="4">게시글이 없습니다.</td></tr>'}</table>`)}
+  ${card('이번 달 손익 요약',`<table class="ops-table"><tr><th>항목</th><th>금액</th></tr>
+  <tr><td>매출</td><td>${won(scoped(ops.meals).filter(x=>x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.billable||x.actual||0)*Number(x.unit||currentBranch().unitPrice||7000),0))}</td></tr>
+  <tr><td>식재료 매입</td><td>${won(purchase)}</td></tr><tr><td>경비</td><td>${won(expense)}</td></tr><tr><td>인건비</td><td>${won(labor)}</td></tr></table>`)}
+  `;
+}
+
+function renderBoard(box){
+  const posts=allOrScopedPosts().slice().reverse();
+  box.innerHTML=`${card('게시글 등록',`<form class="ops-form" onsubmit="addPost(event)">
+    <label>구분<select id="pCat"><option>NOTICE</option><option>WORK</option><option>FIELD</option><option>FOOD</option></select></label>
+    <label class="wide">제목<input id="pTitle" required></label>
+    <label>작성자<input id="pWriter" value="${isHQ()?'본사관리자':'지점관리자'}"></label>
+    <label class="full">내용<textarea id="pContent"></textarea></label>
+    <div class="full"><button class="ops-primary">게시글 등록</button></div></form>`)}
+  ${card('게시글 목록',`<table class="ops-table"><tr><th>구분</th><th>제목</th><th>작성자</th><th>지점</th><th>일자</th><th></th></tr>${posts.map(p=>`<tr><td>${p.category}</td><td>${p.title}</td><td>${p.writer}</td><td>${branchName(p.branchId)}</td><td>${p.date}</td><td>${(isHQ()||p.branchId===currentBranchId())?`<button class="ops-danger" onclick="deletePost(${p.id})">삭제</button>`:''}</td></tr>`).join('')||'<tr><td colspan="6">게시글이 없습니다.</td></tr>'}</table>`)}
+  `;
+}
+function addPost(e){
+  e.preventDefault();
+  ops.posts.push({id:Date.now(),branchId:currentBranchId(),category:pCat.value,title:pTitle.value,writer:pWriter.value,date:new Date().toISOString().slice(0,10),content:pContent.value});
+  saveOps();openOps('board');
+}
+function deletePost(id){
+  if(confirm('이 게시글을 삭제할까요?')){ops.posts=ops.posts.filter(x=>x.id!==id);saveOps();openOps('board')}
+}
+
+function dataForm(type,labels){
+  return `<form class="ops-form" onsubmit="addRecord(event,'${type}')">
+  ${labels.map(([id,label,type2='text',wide=false])=>`<label class="${wide?'wide':''}">${label}<input id="f_${id}" type="${type2}" ${type2==='number'?'step="1" min="0"':''} required></label>`).join('')}
+  <div class="full"><button class="ops-primary">등록</button></div></form>`;
+}
+function weekMonday(v){
+  const d=new Date(v+'T00:00:00'); const day=d.getDay(); const diff=day===0?-6:1-day; d.setDate(d.getDate()+diff); return d.toISOString().slice(0,10);
+}
+function weekDates(mon){
+  const a=[]; const d=new Date(mon+'T00:00:00');
+  for(let i=0;i<7;i++){const x=new Date(d);x.setDate(d.getDate()+i);a.push(x.toISOString().slice(0,10));} return a;
+}
+function shortDay(date){return ['일','월','화','수','목','금','토'][new Date(date+'T00:00:00').getDay()]}
+function renderMeal(box){
+  const b=currentBranch(); ensureBranchPricing(b); const p=b.pricing;
+  const today=new Date().toISOString().slice(0,10), monday=weekMonday(today), dates=weekDates(monday);
+  const priceCards=`<div class="ops-grid">
+    <div class="ops-stat"><small>고객사 조식</small><strong>${won(p.customer.breakfast)}</strong></div>
+    <div class="ops-stat"><small>고객사 중식</small><strong>${won(p.customer.lunch)}</strong></div>
+    <div class="ops-stat"><small>고객사 석식</small><strong>${won(p.customer.dinner)}</strong></div>
+    <div class="ops-stat"><small>고객사 야식</small><strong>${won(p.customer.late)}</strong></div>
+  </div>`;
+  const partnerRows=p.partners.map(x=>`<tr><td>협력사</td><td>${x.name}</td><td>${won(x.unit)}</td><td><button class="ops-light" onclick="editPartner('${x.id}')">수정</button> <button class="ops-danger" onclick="deletePartner('${x.id}')">삭제</button></td></tr>`).join('');
+  const partnerBox=card('협력사 단가 관리',`<form class="ops-form" onsubmit="savePartner(event)">
+    <label>협력사명<input id="partnerName" required placeholder="예: 협력사A"></label>
+    <label>식단가<input id="partnerUnit" type="number" min="0" required placeholder="7000"></label>
+    <input id="partnerId" type="hidden"><div class="full"><button class="ops-primary">협력사 저장</button></div>
+  </form><div style="overflow:auto;margin-top:15px"><table class="ops-table"><tr><th>구분</th><th>업체</th><th>식단가</th><th>관리</th></tr>${partnerRows||'<tr><td colspan="4">등록된 협력사가 없습니다.</td></tr>'}</table></div>`);
+  const opts=mealPriceOptions(b);
+  const weeklyRows=opts.map((o,ri)=>{
+    const cells=dates.map((dt,di)=>`<td class="week-cell"><input type="number" min="0" id="wk_${ri}_${di}_actual" placeholder="실제"><input type="number" min="0" id="wk_${ri}_${di}_billable" placeholder="청구"><input type="number" min="0" id="wk_${ri}_${di}_guaranteed" placeholder="보장" value="${b.guaranteed||0}"></td>`).join('');
+    return `<tr><th class="week-type">${o[0]}<br><small>${won(o[3])}</small></th>${cells}</tr>`;
+  }).join('');
+  const dayHeads=dates.map((d,i)=>`<th>${['월','화','수','목','금','토','일'][i]}<br><small>${d.slice(5)}</small></th>`).join('');
+  box.innerHTML=`<div class="ops-permission">${b.name} · <b>주간 식수 입력</b> · 월요일~일요일 단위로 한 주의 식수를 한 번에 입력합니다.</div>
+  ${card('식단가 현황',priceCards+`<div class="note-box"><b>구분1</b> 고객사 조식·중식·석식·야식 &nbsp; <b>구분2</b> 고객사 간편식 &nbsp; <b>구분3+</b> 협력사별 단가</div>`)}
+  ${card('주간 식수 등록',`<div class="ops-form" style="margin-bottom:12px"><label>주 시작일(월)<input id="mealWeekStart" type="date" value="${monday}" onchange="renderMeal(document.getElementById('opsContent'))"></label></div>
+    <div class="note-box">입력방법: 각 칸에 <b>실제식수 / 청구식수 / 보장식수</b> 순서로 입력합니다. 저장하면 월~일 7일 데이터가 각각 식수 실적으로 등록됩니다.</div>
+    <div style="overflow:auto;margin-top:12px"><table class="ops-table week-meal-table"><tr><th>식수구분</th>${dayHeads}</tr>${weeklyRows}</table></div>
+    <div style="margin-top:14px"><button class="ops-primary" onclick="saveWeeklyMeals()">월~일 주간 식수 저장</button></div>`)}
+  ${partnerBox}
+  ${card('입력 내역',`<div style="overflow:auto"><table class="ops-table"><tr><th>날짜</th><th>구분</th><th>실제</th><th>보장</th><th>청구</th><th>단가</th><th></th></tr>${scoped(ops.meals).slice().reverse().slice(0,100).map(r=>`<tr><td>${r.date||''}</td><td>${r.type||''}</td><td>${num(r.actual)}</td><td>${num(r.guaranteed)}</td><td>${num(r.billable)}</td><td>${won(r.unit)}</td><td><button class="ops-danger" onclick="delRecord('meals',${r.id})">삭제</button></td></tr>`).join('')||'<tr><td colspan="7">입력 내역이 없습니다.</td></tr>'}</table></div>`)}
+  `;
+}
+function saveWeeklyMeals(){
+  const b=currentBranch(); ensureBranchPricing(b); const start=document.getElementById('mealWeekStart')?.value;
+  if(!start){alert('주 시작일을 선택하세요.');return}
+  const monday=weekMonday(start), dates=weekDates(monday), opts=mealPriceOptions(b); let count=0;
+  opts.forEach((o,ri)=>dates.forEach((dt,di)=>{
+    const actual=Number(document.getElementById(`wk_${ri}_${di}_actual`)?.value||0);
+    const billable=Number(document.getElementById(`wk_${ri}_${di}_billable`)?.value||0);
+    const guaranteed=Number(document.getElementById(`wk_${ri}_${di}_guaranteed`)?.value||0);
+    if(actual||billable||guaranteed){
+      const type=o[2], unit=Number(o[3]||0);
+      ops.meals.push({id:Date.now()+count,branchId:currentBranchId(),date:dt,type,actual,guaranteed,billable,unit,priceGroup:(type==='간편식'?'구분2':(['조식','중식','석식','야식'].includes(type)?'구분1':'구분3+'))}); count++;
+    }
+  }));
+  saveOps(); alert(count?`${count}건의 주간 식수 실적이 저장되었습니다.`:'입력된 식수가 없습니다.'); openOps('meal');
+}
+function syncMealPrice(){
+  const s=document.getElementById('f_type'), u=document.getElementById('f_unit'); if(!s||!u)return;
+  u.value=Number(s.selectedOptions[0]?.dataset.price||0);
+}
+function savePartner(e){
+  e.preventDefault(); const b=currentBranch(); ensureBranchPricing(b);
+  const name=document.getElementById('partnerName').value.trim(), unit=Number(document.getElementById('partnerUnit').value||0), id=document.getElementById('partnerId').value;
+  if(!name){alert('협력사명을 입력하세요.');return}
+  const dup=b.pricing.partners.find(x=>x.name===name&&x.id!==id); if(dup){alert('같은 협력사명이 이미 있습니다.');return}
+  if(id){const x=b.pricing.partners.find(x=>x.id===id); if(x){x.name=name;x.unit=unit;}}
+  else b.pricing.partners.push({id:'pt_'+Date.now(),name,unit});
+  saveOps(); openOps('meal');
+}
+function editPartner(id){
+  const b=currentBranch(); ensureBranchPricing(b); const x=b.pricing.partners.find(x=>x.id===id); if(!x)return;
+  document.getElementById('partnerName').value=x.name; document.getElementById('partnerUnit').value=x.unit; document.getElementById('partnerId').value=x.id; window.scrollTo({top:document.getElementById('opsApp').offsetTop+120,behavior:'smooth'});
+}
+function deletePartner(id){
+  const b=currentBranch(); ensureBranchPricing(b); const x=b.pricing.partners.find(x=>x.id===id); if(!x)return;
+  if(!confirm(`${x.name} 협력사를 삭제할까요?`))return; b.pricing.partners=b.pricing.partners.filter(x=>x.id!==id); saveOps(); openOps('meal');
+}
+
+function renderPurchase(box){box.innerHTML=`${card('매입 등록',dataForm('purchases',[['date','날짜','date'],['vendor','거래처'],['item','품목'],['amount','금액','number']]))}${tableRecords(scoped(ops.purchases),[['date','날짜'],['vendor','거래처'],['item','품목'],['amount','금액']],'purchases')}`}
+function renderExpense(box){box.innerHTML=`${card('경비 등록',dataForm('expenses',[['date','날짜','date'],['category','구분'],['memo','내용'],['amount','금액','number']]))}${tableRecords(scoped(ops.expenses),[['date','날짜'],['category','구분'],['memo','내용'],['amount','금액']],'expenses')}`}
+function renderLabor(box){box.innerHTML=`${card('근무·인건비 등록',dataForm('labor',[['date','날짜','date'],['worker','직원명'],['hours','근무시간','number'],['rate','시급','number'],['amount','급여/비용','number']]))}${tableRecords(scoped(ops.labor),[['date','날짜'],['worker','직원명'],['hours','시간'],['rate','시급'],['amount','금액']],'labor')}`}
+function addRecord(e,type){
+  e.preventDefault();
+  const f=e.target,obj={id:Date.now(),branchId:currentBranchId()};
+  f.querySelectorAll('input').forEach(i=>{obj[i.id.replace('f_','')]=i.value});
+  if(type==='meals'){ ensureBranchPricing(currentBranch()); obj.unit=Number(obj.unit||priceForMealType(currentBranch(),obj.type)||currentBranch().unitPrice||7000); obj.priceGroup=(obj.type==='간편식'?'구분2':(['조식','중식','석식','야식'].includes(obj.type)?'구분1':'구분3+')); }
+  ops[type].push(obj);saveOps();
+  openOps(type==='meals'?'meal':type==='purchases'?'purchase':type==='expenses'?'expense':'labor');
+}
+function tableRecords(arr,cols,type){
+  return card('입력 내역',`<div style="overflow:auto"><table class="ops-table"><tr>${cols.map(c=>`<th>${c[1]}</th>`).join('')}<th></th></tr>
+  ${arr.slice().reverse().slice(0,100).map(r=>`<tr>${cols.map(c=>`<td>${['amount','unit','rate'].includes(c[0])?won(r[c[0]]):r[c[0]]||''}</td>`).join('')}<td><button class="ops-danger" onclick="delRecord('${type}',${r.id})">삭제</button></td></tr>`).join('')||`<tr><td colspan="${cols.length+1}">입력 내역이 없습니다.</td></tr>`}</table></div>`);
+}
+function delRecord(type,id){
+  const r=ops[type].find(x=>x.id===id);
+  if(!r)return;
+  if(!isHQ()&&r.branchId!==currentBranchId()){alert('담당 지점 데이터만 수정할 수 있습니다.');return}
+  ops[type]=ops[type].filter(x=>x.id!==id);saveOps();
+  openOps(type==='meals'?'meal':type==='purchases'?'purchase':type==='expenses'?'expense':'labor');
+}
+
+function calcBranch(bid,ym){
+  const b=branchById(bid);
+  const meals=ops.meals.filter(x=>x.branchId===bid&&x.date?.slice(0,7)===ym);
+  const revenue=meals.reduce((a,x)=>a+Number(x.billable||x.actual||0)*Number(x.unit||b.unitPrice||7000),0);
+  const purchase=ops.purchases.filter(x=>x.branchId===bid&&x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.amount||0),0);
+  const expense=ops.expenses.filter(x=>x.branchId===bid&&x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.amount||0),0);
+  const labor=ops.labor.filter(x=>x.branchId===bid&&x.date?.slice(0,7)===ym).reduce((a,x)=>a+Number(x.amount||0),0);
+  return {meals,revenue,purchase,expense,labor,profit:revenue-purchase-expense-labor};
+}
+function renderClosing(box){
+  const ym=new Date().toISOString().slice(0,7);
+  if(isHQ()){
+    const rows=activeBranches().filter(b=>b.id!=='hq').map(b=>{
+      const c=calcBranch(b.id,ym);
+      return `<tr><td>${b.name}</td><td>${num(c.meals.reduce((a,x)=>a+Number(x.billable||x.actual||0),0))}식</td><td>${won(c.revenue)}</td><td>${won(c.purchase)}</td><td>${won(c.expense)}</td><td>${won(c.labor)}</td><td>${won(c.profit)}</td></tr>`;
+    }).join('');
+    const total=activeBranches().filter(b=>b.id!=='hq').reduce((t,b)=>{const c=calcBranch(b.id,ym);return {m:t.m+c.meals.reduce((a,x)=>a+Number(x.billable||x.actual||0),0),r:t.r+c.revenue,p:t.p+c.purchase,e:t.e+c.expense,l:t.l+c.labor}}, {m:0,r:0,p:0,e:0,l:0});
+    box.innerHTML=`<div class="ops-permission">본사관리자는 전체 지점의 월마감 현황을 통합 조회하고 최종 마감 상태를 관리할 수 있습니다.</div>
+    ${card('전체 지점 월마감 '+ym,`<div style="overflow:auto"><table class="ops-table"><tr><th>지점</th><th>청구식수</th><th>매출</th><th>식재료</th><th>경비</th><th>인건비</th><th>예상이익</th></tr>${rows||'<tr><td colspan="7">지점이 없습니다.</td></tr>'}<tr><th>합계</th><th>${num(total.m)}식</th><th>${won(total.r)}</th><th>${won(total.p)}</th><th>${won(total.e)}</th><th>${won(total.l)}</th><th>${won(total.r-total.p-total.e-total.l)}</th></tr></table></div>`)}
+    `;
+  }else renderBranchClosing(box);
+}
+function renderBranchClosing(box){
+  const ym=new Date().toISOString().slice(0,7), c=calcBranch(currentBranchId(),ym);
+  box.innerHTML=`<div class="ops-permission">지점관리자: <b>${currentBranch().name}</b> 월마감 자료를 확인하고 본사에 제출 준비합니다.</div>
+  <div class="ops-grid"><div class="ops-stat"><small>총 청구식수</small><strong>${num(c.meals.reduce((a,x)=>a+Number(x.billable||x.actual||0),0))}식</strong></div><div class="ops-stat"><small>매출</small><strong>${won(c.revenue)}</strong></div><div class="ops-stat"><small>총비용</small><strong>${won(c.purchase+c.expense+c.labor)}</strong></div><div class="ops-stat"><small>예상이익</small><strong>${won(c.profit)}</strong></div></div>
+  ${card('월마감 제출',`<table class="ops-table"><tr><th>구분</th><th>금액</th></tr><tr><td>매출</td><td>${won(c.revenue)}</td></tr><tr><td>식재료 매입</td><td>${won(c.purchase)}</td></tr><tr><td>경비</td><td>${won(c.expense)}</td></tr><tr><td>인건비</td><td>${won(c.labor)}</td></tr><tr><th>예상이익</th><th>${won(c.profit)}</th></tr></table><div class="branch-actions"><button class="ops-primary" onclick="submitBranchClose()">본사에 마감 제출</button></div>`)}
+  `;
+}
+function submitBranchClose(){
+  const ym=new Date().toISOString().slice(0,7);
+  ops.closings=ops.closings||[];
+  const found=ops.closings.find(x=>x.branchId===currentBranchId()&&x.ym===ym);
+  if(found)found.status='submitted';else ops.closings.push({id:Date.now(),branchId:currentBranchId(),ym,status:'submitted',submittedAt:new Date().toISOString()});
+  saveOps();alert('본사에 마감 제출 상태로 저장했습니다.');openOps('closing');
+}
+
+function renderBranches(box){
+  if(!requireHQ())return;
+  const rows=activeBranches().filter(b=>b.id!=='hq').map(b=>{
+    const close=(ops.closings||[]).find(x=>x.branchId===b.id&&x.ym===new Date().toISOString().slice(0,7));
+    return `<tr><td><b>${b.name}</b></td><td>${b.customer||'-'}</td><td>${won(b.unitPrice)}</td><td>${b.guaranteed||0}식</td><td>${b.manager||'-'}<br><small>${b.managerId||'-'}</small></td><td>${close?.status==='submitted'?'제출':'진행중'}</td><td><button class="ops-light" onclick="editBranch('${b.id}')">설정</button> <button class="ops-danger" onclick="deleteBranch('${b.id}')">사용중지</button></td></tr>`;
+  }).join('');
+  box.innerHTML=`
+  ${card('지점 추가',`<form class="ops-form" onsubmit="addBranch(event)">
+    <label>지점명<input id="bName" required placeholder="예: 부산공장점"></label>
+    <label>고객사명<input id="bCustomer"></label>
+    <label>식단가 구분<input value="고객사 · 협력사" readonly title="지점 생성 후 고객사 단가와 협력사별 단가를 각각 관리합니다."></label>
+    <label>고객사 조식 식단가<input id="bBreakfast" type="number" value="7000" min="0"></label>
+    <label>고객사 중식 식단가<input id="bLunch" type="number" value="7000" min="0"></label>
+    <label>고객사 석식 식단가<input id="bDinner" type="number" value="7000" min="0"></label>
+    <label>고객사 야식 식단가<input id="bLate" type="number" value="7000" min="0"></label>
+    <label>고객사 간편식 식단가<input id="bConvenience" type="number" value="7000" min="0"></label>
+    <label>보장식수<input id="bGuaranteed" type="number" value="0" min="0"></label>
+    <label class="wide">주소<input id="bAddress"></label>
+    <label>운영 시작일<input id="bStart" type="date" value="${new Date().toISOString().slice(0,10)}"></label>
+    <label>관리자명<input id="bManager" value="지점관리자"></label>
+    <label>관리자 ID<input id="bManagerId" required placeholder="branch02"></label>
+    <label>관리자 PW<input id="bManagerPw" required value="1234"></label>
+    <label class="wide">사용 식사유형<input id="bMeals" value="중식,석식,야식,특식"></label>
+    <div class="full"><button class="ops-primary">지점 생성 + 운영설정 자동생성</button></div>
+  </form>`)}
+  ${card('등록 지점',`<div style="overflow:auto"><table class="ops-table"><tr><th>지점</th><th>고객사</th><th>식단가 구분</th><th>기본 식단가</th><th>보장식수</th><th>관리자</th><th>이번달 마감</th><th>관리</th></tr>${activeBranches().filter(b=>b.id!=='hq').map(b=>{const close=(ops.closings||[]).find(x=>x.branchId===b.id&&x.ym===new Date().toISOString().slice(0,7));ensureBranchPricing(b);return `<tr><td><b>${b.name}</b></td><td>${b.customer||'-'}</td><td>고객사 + 협력사${b.pricing.partners.length?' ('+b.pricing.partners.length+'개)':''}</td><td>${won(b.pricing.customer.lunch)}</td><td>${b.guaranteed||0}식</td><td>${b.manager||'-'}<br><small>${b.managerId||'-'}</small></td><td>${close?.status==='submitted'?'제출':'진행중'}</td><td><button class="ops-light" onclick="editBranch('${b.id}')">설정</button> <button class="ops-danger" onclick="deleteBranch('${b.id}')">사용중지</button></td></tr>`}).join('')||'<tr><td colspan="8">등록된 지점이 없습니다.</td></tr>'}</table></div>`)}
+  `;
+}
+function addBranch(e){
+  e.preventDefault();
+  const name=bName.value.trim(), managerId=bManagerId.value.trim();
+  if(ops.branches.some(b=>b.name===name)){alert('같은 이름의 지점이 이미 있습니다.');return}
+  if(ops.users.some(u=>u.username===managerId)){alert('이미 사용 중인 관리자 ID입니다.');return}
+  const id='br_'+Date.now();
+  const b={id,name,customer:bCustomer.value,address:bAddress.value,startDate:bStart.value,unitPrice:Number(bLunch.value||7000),pricing:{customer:{breakfast:Number(bBreakfast.value||7000),lunch:Number(bLunch.value||7000),dinner:Number(bDinner.value||7000),late:Number(bLate.value||7000)},convenience:{name:'간편식',unit:Number(bConvenience.value||7000)},partners:[]},meals:bMeals.value.split(',').map(x=>x.trim()).filter(Boolean),guaranteed:Number(bGuaranteed.value||0),manager:bManager.value,managerId,managerPw:bManagerPw.value,active:true};
+  ops.branches.push(b);
+  ops.users.push({id:'u_'+Date.now(),username:managerId,pw:b.managerPw,role:'branch',name:b.manager,branchId:id});
+  saveOps();refreshLoginBranches();alert(`${name}이(가) 생성되었습니다.\n지점 설정·식수·매입·경비·인건비·마감 구조가 바로 생성되었습니다.`);openOps('branches');
+}
+function editBranch(id){
+  const b=branchById(id);
+  if(!b)return; ensureBranchPricing(b);
+  const newName=prompt('지점명',b.name); if(newName===null)return;
+  const price=prompt('식단가',b.unitPrice); if(price===null)return;
+  const guaranteed=prompt('보장식수',b.guaranteed||0); if(guaranteed===null)return;
+  b.name=newName.trim()||b.name;b.unitPrice=Number(price)||b.unitPrice;b.pricing.customer.lunch=b.unitPrice;b.guaranteed=Number(guaranteed)||0;
+  saveOps();refreshLoginBranches();openOps('branches');
+}
+function deleteBranch(id){
+  const b=branchById(id);if(!b)return;
+  if(!confirm(`${b.name}을(를) 사용중지할까요?\n기존 데이터는 삭제하지 않고 보존합니다.`))return;
+  b.active=false;saveOps();refreshLoginBranches();openOps('branches');
+}
+function renderBranchSettings(box){
+  const b=currentBranch(); ensureBranchPricing(b);
+  box.innerHTML=`${card('지점 기본 설정',`<form class="ops-form" onsubmit="saveBranchSettings(event)">
+    <label>지점명<input id="sName" value="${b.name}" required></label>
+    <label>고객사명<input id="sCustomer" value="${b.customer||''}"></label>
+    <label>고객사 조식 식단가<input id="sBreakfast" type="number" value="${b.pricing.customer.breakfast}"></label>
+    <label>고객사 중식 식단가<input id="sLunch" type="number" value="${b.pricing.customer.lunch}"></label>
+    <label>고객사 석식 식단가<input id="sDinner" type="number" value="${b.pricing.customer.dinner}"></label>
+    <label>고객사 야식 식단가<input id="sLate" type="number" value="${b.pricing.customer.late}"></label>
+    <label>고객사 간편식 식단가<input id="sConvenience" type="number" value="${b.pricing.convenience.unit}"></label>
+    <label>보장식수<input id="sGuaranteed" type="number" value="${b.guaranteed||0}"></label>
+    <label class="wide">주소<input id="sAddress" value="${b.address||''}"></label>
+    <label>운영 시작일<input id="sStart" type="date" value="${b.startDate||''}"></label>
+    <label class="wide">사용 식사유형<input id="sMeals" value="${(b.meals||[]).join(',')}"></label>
+    <div class="full"><button class="ops-primary">지점 설정 저장</button></div>
+  </form>`)}
+  ${card('식단가 구분',`<div class="note-box"><b>구분1</b> 고객사 조식·중식·석식·야식 &nbsp; <b>구분2</b> 고객사 간편식 &nbsp; <b>구분3+</b> 협력사별 단가</div><p class="ops-note">협력사는 아래 식수관리에서 업체를 추가하면 업체별 단가 입력창이 자동 생성됩니다. 저장 후 수정할 수 있습니다.</p>`)}
+  ${card('현재 관리자',`<p><b>${b.manager||'지점관리자'}</b> · ID ${b.managerId||'-'}</p><p class="ops-note">관리자 계정은 본사 지점관리에서 변경할 수 있습니다.</p>`)}
+  `;
+}
+function saveBranchSettings(e){
+  e.preventDefault();const b=currentBranch();
+  ensureBranchPricing(b);b.name=sName.value.trim()||b.name;b.customer=sCustomer.value;b.pricing.customer.breakfast=Number(sBreakfast.value||7000);b.pricing.customer.lunch=Number(sLunch.value||7000);b.pricing.customer.dinner=Number(sDinner.value||7000);b.pricing.customer.late=Number(sLate.value||7000);b.pricing.convenience.unit=Number(sConvenience.value||7000);b.unitPrice=b.pricing.customer.lunch;b.guaranteed=Number(sGuaranteed.value||0);b.address=sAddress.value;b.startDate=sStart.value;b.meals=sMeals.value.split(',').map(x=>x.trim()).filter(Boolean);
+  saveOps();refreshLoginBranches();alert('지점 설정이 저장되었습니다.');openOps('branchSettings');
+}
+
+function renderSettings(box){
+  if(!requireHQ())return;
+  box.innerHTML=`${card('데이터 관리',`<p>현재 데이터는 이 브라우저의 localStorage에 저장됩니다. 실제 다중 사용자 운영을 위해서는 추후 서버 DB/로그인 인증을 연결하면 됩니다.</p><div style="display:flex;gap:8px;margin-top:15px;flex-wrap:wrap"><button class="ops-primary" onclick="exportOps()">JSON 백업</button><label class="ops-light file-label">JSON 복원<input type="file" accept=".json" onchange="importOps(event)"></label><button class="ops-danger" onclick="resetOps()">전체 초기화</button></div>`)}
+  ${card('운영 구조',`<table class="ops-table"><tr><th>관리영역</th><th>기능</th></tr><tr><td>지점관리</td><td>지점 추가 시 지점설정·관리자계정·운영데이터 구조 자동 생성</td></tr><tr><td>식수관리</td><td>조식·중식·석식·야식·특식 / 실제·보장·청구 식수</td></tr><tr><td>매입관리</td><td>지점별 식재료 매입 및 거래처 기록</td></tr><tr><td>경비관리</td><td>소모품·소독·폐기물·수선 등</td></tr><tr><td>근무·인건비</td><td>지점별 근무시간·시급·비용 기록</td></tr><tr><td>마감집계</td><td>지점별 월매출·원가·비용·예상이익 자동 계산</td></tr></table>`)}
+  `;
+}
+
+function exportOps(){
+  const blob=new Blob([JSON.stringify(ops,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='NatureON_운영관리_백업_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
+}
+function importOps(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const imported=JSON.parse(reader.result);
+      if(!imported.branches||!imported.users)throw new Error('구조');
+      ops=imported;saveOps();refreshLoginBranches();openOps('dashboard');alert('복원이 완료되었습니다.');
+    }catch(err){alert('올바른 Nature.ON 백업 파일이 아닙니다.')}
+  };
+  reader.readAsText(file);
+}
+function resetOps(){
+  if(confirm('모든 운영관리 데이터를 초기화하고 기본 지점 구조로 되돌릴까요?')){
+    localStorage.removeItem(OPS_KEY);ops=JSON.parse(JSON.stringify(defaultOps));saveOps();refreshLoginBranches();openOps('dashboard');
+  }
+}
+</script><script id="natureon-closing-approval-script">
+(function(){
+const AK='natureon_closing_approval_v1', FK='natureon_closing_files_v1';
+const getOps=()=>{try{return JSON.parse(localStorage.getItem('natureone_ops_v2')||localStorage.getItem('natureon_ops_v2')||'{}')}catch(e){return{}}};
+const getA=()=>{try{return JSON.parse(localStorage.getItem(AK)||'[]')}catch(e){return[]}};
+const setA=x=>localStorage.setItem(AK,JSON.stringify(x));
+const getF=()=>{try{return JSON.parse(localStorage.getItem(FK)||'[]')}catch(e){return[]}};
+const setF=x=>localStorage.setItem(FK,JSON.stringify(x));
+const session=()=>{try{return JSON.parse(sessionStorage.getItem('natureon_ops_session')||'{}')}catch(e){return{}}};
+const nowMonth=()=>{let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')};
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const fmt=v=>v?new Date(v).toLocaleString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'-';
+const bname=id=>{let b=(getOps().branches||[]).find(x=>x.id===id);return b?(b.name||b.branchName||id):id};
+const label=s=>({submitted:'제출',review:'검토중',approved:'승인',locked:'확정',rejected:'반려'}[s]||s||'-');
+const chip=s=>'<span class="status-chip status-'+s+'">'+label(s)+'</span>';
+
+function ensure(){
+ let ops=getOps(), arr=getA();
+ (ops.closings||[]).forEach(c=>{
+   if(!c||!c.branchId)return;
+   let m=c.month||c.closingMonth||nowMonth();
+   if(!arr.some(a=>a.branchId===c.branchId&&a.month===m)){
+     arr.push({id:'CL-'+Date.now()+'-'+Math.random().toString(16).slice(2),branchId:c.branchId,month:m,
+       status:c.status==='approved'?'approved':(c.status||'submitted'),submittedAt:c.submittedAt||new Date().toISOString(),
+       reviewedAt:null,approvedAt:null,lockedAt:null,rejectedAt:null,reviewer:'',approver:'',rejectReason:''});
+   }
+ });
+ setA(arr);return arr;
+}
+
+window.showClosingApprovalPanel=function(){
+ let p=document.getElementById('closingApprovalPanel');if(p){p.style.display='block';renderClosingApproval();}
+};
+
+window.renderClosingApproval=function(){
+ let p=document.getElementById('closingApprovalPanel');if(!p)return;
+ let ops=getOps(), s=session(), role=s.role||s.type||'', hq=role==='hq';
+ let ms=document.getElementById('approvalMonthFilter'),bs=document.getElementById('approvalBranchFilter'),ss=document.getElementById('approvalStatusFilter');
+ if(ms&&!ms.dataset.ready){let mm=[nowMonth()];(ops.closings||[]).forEach(c=>{let m=c.month||c.closingMonth;if(m&&!mm.includes(m))mm.push(m)});ms.innerHTML=mm.sort().reverse().map(m=>'<option>'+m+'</option>').join('');ms.dataset.ready='1'}
+ if(bs&&!bs.dataset.ready){bs.innerHTML='<option value="ALL">전체 지점</option>'+((ops.branches||[]).filter(b=>b.id!=='hq').map(b=>'<option value="'+b.id+'">'+esc(b.name||b.branchName||b.id)+'</option>').join(''));bs.dataset.ready='1'}
+ let m=ms?.value||nowMonth(),bid=bs?.value||'ALL',st=ss?.value||'ALL';
+ let rows=ensure().filter(a=>a.month===m);
+ if(!hq)rows=rows.filter(a=>a.branchId===(s.branchId||s.activeBranchId));
+ if(bid!=='ALL')rows=rows.filter(a=>a.branchId===bid);
+ if(st!=='ALL')rows=rows.filter(a=>a.status===st);
+ let fs=getF(),out='<table class="approval-table"><thead><tr><th>월</th><th>지점</th><th>상태</th><th>첨부</th><th>제출일</th><th>처리</th></tr></thead><tbody>';
+ if(!rows.length)out+='<tr><td colspan="6" style="text-align:center;padding:28px;color:#777">해당 조건의 마감자료가 없습니다.</td></tr>';
+ rows.forEach(a=>{
+   let af=fs.filter(f=>f.approvalId===a.id);
+   out+='<tr><td>'+a.month+'</td><td><b>'+esc(bname(a.branchId))+'</b></td><td>'+chip(a.status)+'</td><td>'+
+     (af.length?af.map(f=>'📎 '+esc(f.name)).join('<br>'):'<span style="color:#999">없음</span>')+
+     '</td><td>'+fmt(a.submittedAt)+'</td><td><div class="approval-actions">';
+   if(hq&&a.status==='submitted')out+='<button class="btn-small btn-review" onclick="approvalAction(\''+a.id+'\',\'review\')">검토중</button>';
+   if(hq&&a.status==='review')out+='<button class="btn-small btn-approve" onclick="approvalAction(\''+a.id+'\',\'approved\')">승인</button><button class="btn-small btn-reject" onclick="approvalAction(\''+a.id+'\',\'rejected\')">반려</button>';
+   if(hq&&a.status==='approved')out+='<button class="btn-small btn-lock" onclick="approvalAction(\''+a.id+'\',\'locked\')">마감 확정</button>';
+   out+='<button class="btn-small btn-download" onclick="openClosingDetail(\''+a.id+'\')">상세/첨부</button></div></td></tr>';
+ });
+ out+='</tbody></table>';document.getElementById('closingApprovalTable').innerHTML=out;
+};
+
+window.approvalAction=function(id,next){
+ let arr=getA(),a=arr.find(x=>x.id===id);if(!a)return;
+ let s=session(),who=s.name||s.userName||s.id||'본사';
+ if(next==='rejected'){let r=prompt('반려 사유를 입력하세요.','마감자료 보완 필요');if(r===null)return;a.rejectReason=r;a.rejectedAt=new Date().toISOString();}
+ if(next==='review'){a.reviewedAt=new Date().toISOString();a.reviewer=who}
+ if(next==='approved'){a.approvedAt=new Date().toISOString();a.approver=who}
+ if(next==='locked')a.lockedAt=new Date().toISOString();
+ a.status=next;setA(arr);alert('마감 상태가 '+label(next)+' 처리되었습니다.');renderClosingApproval();
+};
+
+window.openClosingDetail=function(id){
+ let a=getA().find(x=>x.id===id);if(!a)return;let fs=getF().filter(f=>f.approvalId===id),hq=(session().role||session().type||'')==='hq';
+ let list=fs.length?fs.map(f=>'<div class="file-item"><span>📎 '+esc(f.name)+' ('+Math.round(f.size/1024)+'KB)</span><button class="btn-small btn-download" onclick="downloadStoredFile(\''+f.id+'\')">다운로드</button></div>').join(''):'<div style="color:#888">첨부파일 없음</div>';
+ let attach=hq?'':('<div class="attach-box"><b>지점 마감자료 Excel 첨부</b><div style="margin-top:8px"><input id="closingExcelInput" type="file" accept=".xlsx,.xls,.csv"></div><button class="btn-small" style="margin-top:10px" onclick="attachClosingExcel(\''+id+'\')">파일 첨부</button><div class="note-box" style="margin-top:10px">권장: 식수·매입·경비·인건비·마감집계가 포함된 월마감 Excel.</div></div>');
+ let modal=document.createElement('div');modal.className='close-modal';modal.id='closingDetailModal';
+ modal.innerHTML='<div class="close-modal-card"><div class="close-modal-head"><h3>'+esc(bname(a.branchId))+' · '+a.month+' 마감</h3><button class="btn-small" onclick="this.closest(\'.close-modal\').remove()">닫기</button></div><div style="margin-bottom:12px">현재 상태: '+chip(a.status)+'</div><div class="note-box">제출 '+fmt(a.submittedAt)+' · 검토 '+fmt(a.reviewedAt)+' · 승인 '+fmt(a.approvedAt)+' · 확정 '+fmt(a.lockedAt)+(a.rejectReason?'<br>반려사유: '+esc(a.rejectReason):'')+'</div><div class="attach-box"><b>첨부된 마감자료</b><div class="file-list">'+list+'</div></div>'+attach+'</div>';
+ document.body.appendChild(modal);
+};
+
+window.attachClosingExcel=function(id){
+ let f=document.getElementById('closingExcelInput')?.files?.[0];if(!f){alert('Excel 파일을 선택하세요.');return}
+ let r=new FileReader();r.onload=e=>{let fs=getF();fs.push({id:'F-'+Date.now(),approvalId:id,name:f.name,size:f.size,type:f.type,data:e.target.result,uploadedAt:new Date().toISOString()});setF(fs);alert('마감 Excel 자료가 첨부되었습니다.');document.getElementById('closingDetailModal')?.remove();openClosingDetail(id);renderClosingApproval()};r.readAsDataURL(f);
+};
+window.downloadStoredFile=function(id){let f=getF().find(x=>x.id===id);if(!f)return;let a=document.createElement('a');a.href=f.data;a.download=f.name;document.body.appendChild(a);a.click();a.remove()};
+window.exportClosingExcelTemplate=function(){let csv='월,지점,식수-조식,식수-중식,식수-석식,식수-야식,식수-특식,매입,경비,인건비,마감이익,비고\n'+nowMonth()+',지점명,0,0,0,0,0,0,0,0,0,';let b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='NatureON_월마감_Excel양식.csv';a.click();URL.revokeObjectURL(a.href)};
+window.NatureONClosingApproval={render:renderClosingApproval,ensure:ensure};
+document.addEventListener('click',e=>{let t=e.target.closest('button,a');if(!t)return;let tx=(t.textContent||'').trim();if(tx.includes('일·월 마감')||tx.includes('마감 관리')||tx.includes('마감승인'))setTimeout(showClosingApprovalPanel,80)});
+})();
+</script><script id="publicNewsAdminScript">
+const PUBLIC_NEWS_KEY='natureon_public_news_v1';
+function readPublicNews(){
+  const demo=[
+    {id:'news_demo_1',category:'소식',date:new Date().toISOString().slice(0,10),title:'Nature.ON 새로운 소식',body:'Nature.ON의 새로운 운영 소식과 현장 이야기를 전합니다.',image:'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80'},
+    {id:'news_demo_2',category:'운영이야기',date:'2026-09-22',title:'현장 중심의 운영이야기',body:'고객의 목소리를 반영하여 메뉴와 서비스 품질을 높여가는 과정을 소개합니다.',image:'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&q=80'},
+    {id:'news_demo_3',category:'운영이야기',date:'2026-09-18',title:'건강한 식단을 준비하는 하루',body:'신선한 식재료와 정성스러운 조리로 매일의 한 끼를 준비합니다.',image:'https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1200&q=80'}
+  ];
+  try{const v=JSON.parse(localStorage.getItem(PUBLIC_NEWS_KEY)||'null');if(Array.isArray(v)&&v.length)return v;localStorage.setItem(PUBLIC_NEWS_KEY,JSON.stringify(demo));return demo.slice()}catch{return demo.slice()}
+}
+function newsEscape(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderHomeNews(){const el=document.getElementById('homeNewsList');if(!el)return;const items=readPublicNews().sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,3);el.innerHTML=items.length?items.map(n=>`<a href="nature-news.html#news" class="news-item"><span class="news-category">${newsEscape(n.category)}</span><span class="news-title">${newsEscape(n.title)}</span><span class="news-date">${newsEscape(n.date)}</span></a>`).join(''):'<p style="padding:28px 10px;color:#68716b">등록된 소식이 없습니다.</p>'}
+function renderPublicNewsAdmin(box){if(!isHQ())return;const list=readPublicNews().sort((a,b)=>String(b.date).localeCompare(String(a.date)));box.innerHTML=`<div class="ops-card"><h3>홈페이지 소식 등록</h3><p class="news-admin-note">제목과 본문을 등록하면 이 브라우저의 공개 소식 페이지에 표시됩니다. 이미지는 작은 파일만 등록할 수 있습니다.</p><form class="news-admin-form" id="newsAdminForm" onsubmit="savePublicNews(event)"><input type="hidden" id="newsEditId"><label>분류<select id="newsCategory"><option>소식</option><option>운영이야기</option></select></label><label>게시일<input id="newsDate" type="date" required></label><label>제목<input id="newsTitle" maxlength="120" required></label><label>본문<textarea id="newsBody" rows="7" required></textarea></label><label>사진 (선택, 500KB 이하)<input id="newsImage" type="file" accept="image/png,image/jpeg,image/webp"></label><button class="ops-primary" type="submit">소식 저장</button><button class="ops-light" type="button" onclick="openOps('news')">새 글 작성</button></form><div class="news-admin-list">${list.map(n=>`<div class="news-admin-row"><span><b>${newsEscape(n.title)}</b><br><small>${newsEscape(n.date)} · ${newsEscape(n.category)}</small></span><span><button onclick="editPublicNews('${newsEscape(n.id)}')">수정</button><button onclick="deletePublicNews('${newsEscape(n.id)}')">삭제</button></span></div>`).join('')||'<p style="padding:18px 0">등록된 소식이 없습니다.</p>'}</div></div>`;document.getElementById('newsDate').value=new Date().toLocaleDateString('en-CA')}
+function editPublicNews(id){if(!isHQ())return;const n=readPublicNews().find(x=>x.id===id);if(!n)return;document.getElementById('newsEditId').value=n.id;document.getElementById('newsCategory').value=(n.category==='NOTICE'||n.category==='FOOD'||n.category==='SERVICE'||n.category==='EVENT')?(n.category==='NOTICE'?'소식':'운영이야기'):(n.category||'소식');document.getElementById('newsDate').value=n.date;document.getElementById('newsTitle').value=n.title;document.getElementById('newsBody').value=n.body;document.getElementById('newsTitle').focus()}
+function deletePublicNews(id){if(!isHQ()||!confirm('이 소식을 삭제할까요?'))return;localStorage.setItem(PUBLIC_NEWS_KEY,JSON.stringify(readPublicNews().filter(x=>x.id!==id)));openOps('news')}
+async function savePublicNews(event){event.preventDefault();if(!isHQ())return;const id=document.getElementById('newsEditId').value;const all=readPublicNews(),old=all.find(x=>x.id===id);let image=old?.image||'';const file=document.getElementById('newsImage').files[0];if(file){if(file.size>500000){alert('사진은 500KB 이하 파일을 선택해 주세요.');return}image=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file)})}const item={id:id||'news_'+Date.now(),category:document.getElementById('newsCategory').value,date:document.getElementById('newsDate').value,title:document.getElementById('newsTitle').value.trim(),body:document.getElementById('newsBody').value.trim(),image};if(!item.title||!item.body)return;const updated=id?all.map(x=>x.id===id?item:x):[...all,item];try{localStorage.setItem(PUBLIC_NEWS_KEY,JSON.stringify(updated))}catch{alert('저장 공간이 부족합니다. 사진 크기를 줄인 후 다시 시도해 주세요.');return}openOps('news');alert('소식이 저장되었습니다.')}
+
+</script><script id="natureOnGalleryAdminScript">
+(function(){
+ const GALLERY_KEY='natureon_gallery_v1';
+ const DEFAULT_GALLERY=[
+  {id:'gallery_demo_1',date:'2026-09-26',title:'현장과 함께하는 Nature.ON',body:'현장 구성원들과 함께 더 나은 식음서비스를 만들어가는 순간입니다.',image:'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1200&q=80'},
+  {id:'gallery_demo_2',date:'2026-09-20',title:'건강한 한 끼를 준비하는 시간',body:'신선한 식재료와 정성스러운 조리로 매일의 식사를 준비합니다.',image:'https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1200&q=80'},
+  {id:'gallery_demo_3',date:'2026-09-15',title:'Nature.ON 사내 활동',body:'함께 배우고 소통하며 더 좋은 운영을 만들어갑니다.',image:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80'}
+ ];
+ const read=()=>{try{const v=JSON.parse(localStorage.getItem(GALLERY_KEY)||'null');if(Array.isArray(v)&&v.length)return v;localStorage.setItem(GALLERY_KEY,JSON.stringify(DEFAULT_GALLERY));return DEFAULT_GALLERY.slice()}catch{return DEFAULT_GALLERY.slice()}};
+ const write=v=>localStorage.setItem(GALLERY_KEY,JSON.stringify(v));
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ window.readPublicGallery=read;
+ window.renderGalleryAdmin=function(box){
+  if(!isHQ())return;
+  const list=read().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  box.innerHTML=card('사내갤러리 관리',`<p class="gallery-admin-note">갤러리 제목은 왼쪽 목록에 한 줄로 표시되고, 방문자가 클릭하면 오른쪽에 사진과 설명이 나타납니다. 사진은 800KB 이하를 권장합니다.</p>
+  <form class="gallery-admin-form" id="galleryAdminForm" onsubmit="savePublicGallery(event)"><input type="hidden" id="galleryEditId"><label>등록일<input id="galleryDate" type="date" required></label><label>제목<input id="galleryTitle" maxlength="120" required></label><label>설명<textarea id="galleryBody" rows="5" maxlength="1000" required></textarea></label><label>사진<input id="galleryImage" type="file" accept="image/png,image/jpeg,image/webp"></label><button class="ops-primary" type="submit">갤러리 저장</button><button class="ops-light" type="button" onclick="openOps('gallery')">새 글 작성</button></form>
+  <div class="gallery-admin-list">${list.map(x=>`<div class="gallery-admin-row"><span><img class="gallery-admin-thumb" src="${esc(x.image||'')}" alt=""><b>${esc(x.title)}</b><br><small>${esc(x.date||'')}</small></span><span><button onclick="editPublicGallery('${esc(x.id)}')">수정</button><button onclick="deletePublicGallery('${esc(x.id)}')">삭제</button></span></div>`).join('')||'<p style="padding:18px 0">등록된 갤러리가 없습니다.</p>'}</div>`);
+  document.getElementById('galleryDate').value=new Date().toLocaleDateString('en-CA');
+ };
+ window.editPublicGallery=function(id){if(!isHQ())return;const x=read().find(v=>String(v.id)===String(id));if(!x)return;document.getElementById('galleryEditId').value=x.id;document.getElementById('galleryDate').value=x.date||'';document.getElementById('galleryTitle').value=x.title||'';document.getElementById('galleryBody').value=x.body||'';document.getElementById('galleryTitle').focus()};
+ window.deletePublicGallery=function(id){if(!isHQ()||!confirm('이 갤러리 항목을 삭제할까요?'))return;write(read().filter(x=>String(x.id)!==String(id)));openOps('gallery')};
+ window.savePublicGallery=async function(event){event.preventDefault();if(!isHQ())return;const id=document.getElementById('galleryEditId').value;const all=read(),old=all.find(x=>String(x.id)===String(id));let image=old?.image||'';const file=document.getElementById('galleryImage').files[0];if(file){if(file.size>800000){alert('사진은 800KB 이하 파일을 선택해 주세요.');return}image=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}if(!image){alert('사진을 선택해 주세요.');return}const item={id:id||'gallery_'+Date.now(),date:document.getElementById('galleryDate').value,title:document.getElementById('galleryTitle').value.trim(),body:document.getElementById('galleryBody').value.trim(),image};if(!item.title||!item.body)return;try{write(id?all.map(x=>String(x.id)===String(id)?item:x):[...all,item])}catch{alert('저장 공간이 부족합니다. 사진 크기를 줄여주세요.');return}openOps('gallery');alert('사내갤러리가 저장되었습니다.')};
+})();
+</script><script id="natureOnCustomerAdminScript">
+(function(){
+ const IQ='natureon_customer_inquiries_v1', CQ='natureon_consultations_v1';
+ const read=k=>{try{const v=JSON.parse(localStorage.getItem(k)||'[]');return Array.isArray(v)?v:[]}catch{return[]}};
+ const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ window.customerAdminData={read,write,IQ,CQ,esc};
+ function status(s){s=s||'답변대기'; const c=s==='답변완료'?'done':s==='답변중'?'answer':'wait'; return `<span class="customer-admin-status ${c}">${esc(s)}</span>`}
+ window.renderCustomerInquiries=function(box){
+   if(!isHQ()) return;
+   const list=read(IQ).sort((a,b)=>Number(b.createdAt||0)-Number(a.createdAt||0));
+   box.innerHTML=card('고객문의게시판 관리',`<p class="news-admin-note">공개 게시판에서 접수된 비공개 문의를 취합하고 관리자 답글을 작성할 수 있습니다. 작성자 본인은 게시글 비밀번호로 자신의 문의와 답변을 확인합니다.</p>
+   <div style="overflow:auto"><table class="ops-table"><tr><th>일자</th><th>제목</th><th>작성자</th><th>상태</th><th>관리</th></tr>${list.map(x=>`<tr><td>${esc(x.date||'')}</td><td><b>${esc(x.title)}</b></td><td>${esc(x.writer)}</td><td>${status(x.status)}</td><td><div class="customer-admin-row-actions"><button class="reply" onclick="viewCustomerInquiry('${esc(x.id)}')">상세/답글</button><button class="del" onclick="deleteCustomerInquiry('${esc(x.id)}')">삭제</button></div></td></tr>`).join('')||'<tr><td colspan="5">접수된 문의가 없습니다.</td></tr>'}</table></div><div id="customerInquiryDetail"></div>`)}
+ window.viewCustomerInquiry=function(id){ if(!isHQ())return; const x=read(IQ).find(v=>String(v.id)===String(id)); if(!x)return; const d=document.getElementById('customerInquiryDetail'); if(!d)return; d.innerHTML=`<div class="customer-admin-detail"><h4>${esc(x.title)}</h4><div style="font-size:12px;color:#68716b">${esc(x.date||'')} · ${esc(x.writer)} · ${esc(x.phone||'')}</div><pre>${esc(x.content)}</pre><label style="font-size:13px;font-weight:700">관리자 답글<textarea id="customerReplyInput">${esc(x.reply||'')}</textarea></label><div style="display:flex;gap:8px;margin-top:10px"><button class="ops-primary" onclick="saveCustomerReply('${esc(x.id)}')">답글 저장</button><button class="ops-light" onclick="markCustomerDone('${esc(x.id)}')">답변완료 처리</button></div></div>`; d.scrollIntoView({behavior:'smooth',block:'nearest'}) }
+ window.saveCustomerReply=function(id){if(!isHQ())return; const all=read(IQ),i=all.findIndex(x=>String(x.id)===String(id));if(i<0)return;all[i].reply=document.getElementById('customerReplyInput')?.value.trim()||'';all[i].status=all[i].reply?'답변중':'답변대기';all[i].answeredAt=Date.now();write(IQ,all);renderCustomerInquiries(document.getElementById('opsContent'));alert('답글이 저장되었습니다.')}
+ window.markCustomerDone=function(id){if(!isHQ())return;const all=read(IQ),i=all.findIndex(x=>String(x.id)===String(id));if(i<0)return;const reply=document.getElementById('customerReplyInput')?.value.trim();if(reply)all[i].reply=reply;all[i].status='답변완료';all[i].answeredAt=Date.now();write(IQ,all);renderCustomerInquiries(document.getElementById('opsContent'));alert('답변완료로 처리했습니다.')}
+ window.deleteCustomerInquiry=function(id){if(!isHQ()||!confirm('이 문의를 삭제할까요?'))return;write(IQ,read(IQ).filter(x=>String(x.id)!==String(id)));renderCustomerInquiries(document.getElementById('opsContent'))}
+ window.renderCustomerConsultations=function(box){
+   if(!isHQ())return; const list=read(CQ).sort((a,b)=>Number(b.createdAt||0)-Number(a.createdAt||0));
+   box.innerHTML=card('상담신청 관리',`<p class="news-admin-note">홈페이지 상담신청으로 접수된 업체 정보를 본사관리자 화면에서 확인합니다.</p><div style="overflow:auto"><table class="ops-table"><tr><th>일자</th><th>업체명</th><th>신청자</th><th>연락처</th><th>상태</th><th>관리</th></tr>${list.map(x=>`<tr><td>${esc(x.date||'')}</td><td><b>${esc(x.company)}</b></td><td>${esc(x.name)}</td><td>${esc(x.phone)}</td><td>${status(x.status||'접수')}</td><td><div class="customer-admin-row-actions"><button class="reply" onclick="viewConsultation('${esc(x.id)}')">상세보기</button><button class="done" onclick="completeConsultation('${esc(x.id)}')">상담완료</button><button class="del" onclick="deleteConsultation('${esc(x.id)}')">삭제</button></div></td></tr>`).join('')||'<tr><td colspan="6">접수된 상담신청이 없습니다.</td></tr>'}</table></div><div id="consultationDetail"></div>`)}
+ window.viewConsultation=function(id){if(!isHQ())return;const x=read(CQ).find(v=>String(v.id)===String(id));if(!x)return;const d=document.getElementById('consultationDetail');d.innerHTML=`<div class="customer-admin-detail"><h4>${esc(x.company)} · ${esc(x.name)}</h4><div style="font-size:12px;color:#68716b">${esc(x.date||'')} · ${esc(x.phone||'')} ${x.email?'· '+esc(x.email):''}</div><pre>위탁급식 문의/제안\n${esc(x.proposal||'')}\n\n요청사항\n${esc(x.request||'')}\n\n기타 문의\n${esc(x.message||'')}</pre></div>`;d.scrollIntoView({behavior:'smooth',block:'nearest'})}
+ window.completeConsultation=function(id){if(!isHQ())return;const all=read(CQ),i=all.findIndex(x=>String(x.id)===String(id));if(i<0)return;all[i].status='상담완료';all[i].completedAt=Date.now();write(CQ,all);renderCustomerConsultations(document.getElementById('opsContent'))}
+ window.deleteConsultation=function(id){if(!isHQ()||!confirm('이 상담신청을 삭제할까요?'))return;write(CQ,read(CQ).filter(x=>String(x.id)!==String(id)));renderCustomerConsultations(document.getElementById('opsContent'))}
+ const oldOpenOps=window.openOps;
+ window.openOps=function(view){
+   if(view==='inquiries'||view==='consultations'){
+     if(!opsSession){requestOpsLogin();return} if(!isHQ()){alert('본사관리자 전용 메뉴입니다.');return}
+     const el=document.getElementById('opsApp');el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'start'});
+     document.querySelectorAll('.ops-sidebar button').forEach(b=>b.classList.toggle('active',b.dataset.op===view));
+     document.getElementById('opsTitle').textContent=view==='inquiries'?'고객문의 관리':'상담신청 관리';
+     document.getElementById('opsUserInfo').innerHTML=`<span class="role-badge">본사관리자 · ${currentBranch().name}</span><button class="ops-logout" onclick="logoutOps()">로그아웃</button>`;
+     (view==='inquiries'?renderCustomerInquiries:renderCustomerConsultations)(document.getElementById('opsContent'));return;
+   }
+   return oldOpenOps(view);
+ };
+})();
+</script><script>window.addEventListener('load',()=>{if(opsSession)openOps('dashboard');else requestOpsLogin()})</script></body></html>
